@@ -1,0 +1,9 @@
+{% extends 'station/base.html' %}
+
+{% block content %}
+    <h1>{{ gas_station.name }} Gas Station</h1>
+    <p>Stock: {{ gas_station.stock }}</p>
+    <p>Sales: {{ gas_station.sales }}</p>
+    <a href="{% url 'stock_detail' %}">View stock</a>
+    <a href="{% url 'sales_detail' %}">View sales</a>
+{% endblock %}

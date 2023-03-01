@@ -1,0 +1,10 @@
+{% extends 'station/base.html' %}
+
+{% block content %}
+  <h1>{{ gas_station.name }} Gas Station Sales</h1>
+  <ul>
+    {% for product in gas_station.products.all %}
+      <li>{{ product.name }}: {{ product.sales }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

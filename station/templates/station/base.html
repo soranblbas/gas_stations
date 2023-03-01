@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gas Station Management System{% endblock %}</title>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'gas_station_detail' %}">{{ user.gas_station.name }}</a></li>
+            <li><a href="{% url 'logout' %}">Log out</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Log in</a></li>
+            <li><a href="{% url 'signup' %}">Sign up</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+</body>
+</html>

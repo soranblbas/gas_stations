@@ -1,0 +1,12 @@
+{% extends 'station/base.html' %}
+
+{% block content %}
+    <h1>Welcome to the Gas Station Management System</h1>
+    {% if user.is_authenticated %}
+        <p>You are logged in as {{ user.username }}</p>
+        <a href="{% url 'gas_station_detail' %}">Go to your gas station's page</a>
+    {% else %}
+        <a href="{% url 'login' %}">Log in</a>
+        <a href="{% url 'signup' %}">Sign up</a>
+    {% endif %}
+{% endblock %}
