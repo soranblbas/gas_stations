@@ -98,3 +98,21 @@ class Sales(models.Model):
         # Update the stock quantity
         stock.quantity -= self.quantity
         stock.save()
+
+
+class Order(models.Model):
+    gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"{self.gas_station.station.name} - {self.date}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.item.name} - {self.quantity}"

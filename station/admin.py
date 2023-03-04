@@ -123,6 +123,24 @@ class SalesAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInline]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "gas_station":
+            if request.user.is_superuser:
+                pass
+            else:
+                kwargs["queryset"] = GasStation.objects.filter(user=request.user)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 admin.site.register(GasStation, GasStationAdmin)
 admin.site.register(Item)
 admin.site.register(Stock, StockAdmin)
