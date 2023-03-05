@@ -104,7 +104,6 @@ class Order(models.Model):
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
 
-
     def __str__(self):
         return f"{self.gas_station.station.name} - {self.date}"
 

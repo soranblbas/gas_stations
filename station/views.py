@@ -1,71 +1,61 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+from multiprocessing import Value
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from .forms import GasStationForm
+
+from django.forms import IntegerField
+from django.shortcuts import render
+from django.db.models import Sum, Case, When, F
+from django.views.generic import TemplateView
+
 from .models import *
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 
 
 def home(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('/')
+    else:
+        form = AuthenticationForm()
+
     if request.user.is_authenticated:
-        return redirect('station/gas_station_detail')
-    else:
         return render(request, 'station/home.html')
-
-
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        gas_station_form = GasStationForm(request.POST)
-        if form.is_valid() and gas_station_form.is_valid():
-            user = form.save()
-            gas_station = gas_station_form.save(commit=False)
-            gas_station.user = user
-            gas_station.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('station/gas_station_detail')
     else:
-        form = UserCreationForm()
-        gas_station_form = GasStationForm()
-    return render(request, 'station/signup.html', {'form': form, 'gas_station_form': gas_station_form})
+        return render(request, 'station/login.html', {'form': form})
 
 
-@login_required
-def gas_station_detail(request):
-    gas_station = GasStation.objects.get(user=request.user)
-    return render(request, 'station/gas_station_detail.html', {'gas_station': gas_station})
+def sales_report(request):
+    sales = Sales.objects.all()
+    total_sales = sales.aggregate(total=Sum('total_amount'))['total']
+    return render(request, 'station/reports/sales_report.html', {'sales': sales, 'total_sales': total_sales})
 
 
-@login_required
-def stock_detail(request):
-    gas_station = GasStation.objects.get(user=request.user)
-    stock = Stock.objects.filter(gas_station=gas_station)
-    return render(request, 'station/stock_detail.html', {'stock': stock})
+def stock_report(request):
+    st = Stock.objects.all()
+
+    context = {'st': st}
+
+    return render(request, 'station/reports/stock_report.html', context)
 
 
-@login_required
-def sales_detail(request):
-    gas_station = GasStation.objects.get(user=request.user)
-    sales = Sales.objects.filter(gas_station=gas_station)
-    return render(request, 'station/sales_detail.html', {'sales': sales})
+def order_report(request):
+    orders = Order.objects.all()
+    return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('gas_station_detail')
-        else:
-            return render(request, 'station/login.html', {'error_message': 'Invalid login'})
-    else:
-        return render(request, 'station/login.html')
+def station_report(request):
+    stations = GasStation.objects.all()
+    sales = []
+    for station in stations:
+        station_sales = Sales.objects.filter(gas_station=station)
+        total_sales = station_sales.aggregate(total=Sum('total_amount'))['total']
+        sales.append({'station': station, 'total_sales': total_sales})
+    return render(request, 'station/reports/station_report.html', {'sales': sales})
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('station/home')

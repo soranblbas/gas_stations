@@ -1,6 +1,5 @@
 from .models import *
 from django.contrib import admin
-
 from django.contrib import admin
 from django.contrib.admin import helpers
 from django.contrib.admin.options import csrf_protect_m
@@ -146,3 +145,7 @@ admin.site.register(Item)
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Sales, SalesAdmin)
 admin.site.register(station)
+
+admin.site.site_header = "Gas Station Admin"
+admin.site.site_title = "Gas Station  Admin Portal"
+admin.site.index_title = "Welcome to Gas Station  Portal"

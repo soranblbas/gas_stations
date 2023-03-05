@@ -1,13 +1,12 @@
 {% extends 'station/base.html' %}
 
+
+
 {% block content %}
-    <h1>Log in</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
-        <input type="submit" value="Log in">
-    </form>
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
 {% endblock %}
