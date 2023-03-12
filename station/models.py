@@ -177,13 +177,31 @@ class Sales(models.Model):
 
 
 class Order(models.Model):
+    PENDING = 'PN'
+    PROCESSED = 'PR'
+    COMPLETED = 'CM'
+
+    STATUS_CHOICES = (
+        (PENDING, 'Pending'),
+        (PROCESSED, 'processed'),
+        (COMPLETED, 'Completed'),
+    )
     invoice_number = models.CharField(max_length=10, unique=True, editable=False)
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
     shift = models.CharField(max_length=20, blank=True, null=True)
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']
 
     def __str__(self):
-        return f"Invoice Number : {self.invoice_number} , {self.gas_station.station.name} - {self.date} "
+        return f"Order {self.id} ({self.get_status_display()}) by {self.gas_station.user}"
+
+    # Make the status field visible only to superusers
+    def status_visible_to(self, user):
+        return user.is_superuser
 
     def save(self, *args, **kwargs):
         if not self.invoice_number:

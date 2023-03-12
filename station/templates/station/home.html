@@ -1,82 +1,98 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Gas Station Management</title>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-      header {
-        background-color: #003366;
-        color: #fff;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 20px;
-      }
-      header h1 {
-        margin: 0;
-      }
-      nav {
-        background-color: #f2f2f2;
-        border-right: 1px solid #ccc;
-        box-sizing: border-box;
-        height: calc(100vh - 80px);
-        overflow-y: auto;
-        padding: 20px;
-        width: 200px;
-      }
-      nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      nav ul li {
-        margin-bottom: 10px;
-      }
-      nav ul li a {
-        color: #333;
-        display: block;
-        text-decoration: none;
-      }
-      main {
-        padding: 20px;
-      }
-      footer {
-        background-color: #003366;
-        color: #fff;
-        padding: 10px 20px;
-        text-align: center;
-      }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            font-family: sans-serif;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .dashboard__box {
+            width: 300px;
+            height: 150px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .dashboard__box:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard__box--sale {
+            background-color: #8bc34a;
+            color: #fff;
+        }
+
+        .dashboard__box--order {
+            background-color: #2196f3;
+            color: #fff;
+        }
+
+        .dashboard__box--reports {
+            background-color: #ff9800;
+            color: #fff;
+        }
+
+        .dashboard__box h2 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 768px) {
+            .dashboard__box {
+                width: 100%;
+                height: 100px;
+            }
+        }
+
+        body {
+            background-color: #ecbbbe; /* replace with your preferred color */
+        }
+
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>Gas Station Management</h1>
-      <a href="/admin/logout/">Logout</a>
-    </header>
-    <nav>
-      <ul>
-        <li><a href="/admin/">Admin</a></li>
-        <li><a href="/admin/auth/user/">Users</a></li>
-        <li><a href="/admin/station/station">Stations</a></li>
-        <li><a href="/admin/station/gasstation/">Gas Stations</a></li>
-        <li><a href="/admin/station/item/">Items</a></li>
-        <li><a href="/admin/station/stock_invoice/">Stock Invoices</a></li>
-        <li><a href="/admin/station/stock/">Stocks</a></li>
-        <li><a href="/admin/station/s_invoice/">Sales Invoices</a></li>
-        <li><a href="/admin/station/sales/">Sales</a></li>
-        <li><a href="/admin/station/order/">Orders</a></li>
-      </ul>
-    </nav>
-    <main>
-      <h2>Welcome to the Gas Station Management System!</h2>
-      <p>Use the links on the left to navigate to different parts of the system.</p>
-    </main>
-    <footer>
-      <p>&copy; 2023 Gas Station Management</p>
-    </footer>
-  </body>
+</head>
+<body>
+<div class="dashboard">
+    <div class="dashboard__box dashboard__box--sale">
+
+        <a href="admin/station/s_invoice/add/"> <h2>Sale / المبيعات</h2></a>
+    </div>
+    <div class="dashboard__box dashboard__box--order">
+        <h2> Order / الطلبية</h2>
+    </div>
+    <div class="dashboard__box dashboard__box--reports">
+        <h2> Reports / التقارير</h2>
+        <a href="admin/station/s_invoice/add/"> <h2>Sale / المبيعات</h2></a>
+    </div>
+
+
+    <div class="dashboard__box dashboard__box--reports">
+        <a href="{% url 'logout' %}"> <h2>Logout</h2></a>
+        <a href="admin/station/s_invoice/add/"> <h2>Sale / المبيعات</h2></a>
+    </div>
+</div>
+</body>
 </html>

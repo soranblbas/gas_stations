@@ -155,8 +155,23 @@ class OrderAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = GasStation.objects.filter(user=request.user)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    # Hide the status field when creating a new order
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj=obj)
+        if obj is None:
+            return [f for f in fields if f != 'status']
+        elif not obj.status_visible_to(request.user):
+            return [f for f in fields if f != 'status']
+        return fields
+
     list_display = ('invoice_number', 'shift',)
     readonly_fields = ('shift',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
 
 
 @admin.register(Item)
