@@ -64,13 +64,27 @@ class S_InvoiceAdmin(admin.ModelAdmin):
         station_number = obj.sales.first().gas_station.station if obj.sales.first() else '-'
         return format_html('<b>{}</b>', station_number)
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            return qs.filter(sales__gas_station__user=request.user)
+
+    # def save_model(self, request, obj, form, change):
+    #     if not change:
+    #         obj.user = request.user
+    #     obj.save()
+
     show_sales_total.short_description = _('Total Sales')
     show_station_number.short_description = _('Station Number')
 
     # list_display = ('invoice_number', 'show_sales_total', 'show_station_number')
     # search_fields = ('invoice_number', 'sales__gas_station__station_number')
 
-    list_display = ('invoice_number', 'total_sales_amount', 'get_station_numbers')
+    list_display = ('invoice_number', 'total_sales_amount', 'get_station_numbers', 'shift', 'sale_invoice_date',)
+    readonly_fields = ('shift',)
+    list_filter = ('shift', 'sale_invoice_date',)
 
 
 #
@@ -81,6 +95,12 @@ class S_InvoiceAdmin(admin.ModelAdmin):
 class StockItem(admin.TabularInline):
     model = Stock
     extra = 1
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
 
 
 @admin.register(Stock_Invoice)
@@ -101,25 +121,21 @@ class GasStationAdmin(admin.ModelAdmin):
         return qs.filter(user=request.user)
 
 
-class StockAdmin(admin.ModelAdmin):
+# class StockAdmin(admin.ModelAdmin):
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         if request.user.is_superuser:
+#             return qs
+#         return qs.filter(gas_station__user=request.user)
+
+
+class SalesAdmin(admin.ModelAdmin):
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
         return qs.filter(gas_station__user=request.user)
-
-
-class SalesAdmin(admin.ModelAdmin):
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "gas_station":
-            # Show only the gas station associated with the current user
-            gas_station = GasStation.objects.filter(user=request.user).first()
-            if gas_station:
-                kwargs["queryset"] = GasStation.objects.filter(pk=gas_station.station.pk)
-            else:
-                kwargs["queryset"] = GasStation.objects.none()
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class OrderItemInline(admin.TabularInline):
@@ -139,12 +155,65 @@ class OrderAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = GasStation.objects.filter(user=request.user)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    list_display = ('invoice_number', 'shift',)
+    readonly_fields = ('shift',)
 
-admin.site.register(GasStation, GasStationAdmin)
-admin.site.register(Item)
-admin.site.register(Stock, StockAdmin)
+
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'production_date', 'expire_date', 'days_until_expiry')
+    readonly_fields = ('days_until_expiry',)
+
+    def days_until_expiry(self, obj):
+        try:
+            today = date.today()
+            delta = obj.expire_date - today
+            days = delta.days
+            if days <= 10:
+                return format_html('<span style="color: red;">{}</span>', days)
+            else:
+                return days
+        except:
+            return date.today()
+
+    days_until_expiry.short_description = 'Days until expiry'
+
+
+@admin.register(station)
+class StationAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(GasStation)
+class GasStationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'station', 'address', 'city', 'state', 'zip_code',)
+
+
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+    list_display = ('stock_invoice', 'gas_station', 'item', 'quantity',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
+
+
+@admin.register(Inventory)
+class InventoryAdmin(admin.ModelAdmin):
+    list_display = ('gas_station', 'item', 'stock', 'sale', 'pur_qty', 'sale_qty', 'total_bal_qty',)
+    list_filter = ('gas_station', 'item',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
+
+
+# admin.site.register(GasStation, GasStationAdmin)
 admin.site.register(Sales, SalesAdmin)
-admin.site.register(station)
 
 admin.site.site_header = "Gas Station Admin"
 admin.site.site_title = "Gas Station  Admin Portal"
