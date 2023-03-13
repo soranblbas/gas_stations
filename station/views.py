@@ -3,8 +3,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 
 from django.forms import IntegerField
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
-from django.db.models import Sum, Case, When, F
+from django.db.models import Sum, Case, When, F, Max, Min
 from django.views.generic import TemplateView
 from pyexpat.errors import messages
 
@@ -40,7 +41,8 @@ def sales_report(request):
 
 
 def stock_report(request):
-    st = Inventory.objects.all()
+    # st = Inventory.objects.all()
+    st = Inventory.objects.values_list('item').annotate(last_bal_qty=Min('total_bal_qty')).order_by('-id')
 
     context = {'st': st}
 
@@ -88,8 +90,6 @@ def logoutUser(request):
 
 
 def shift_sale_report(request):
-
-
     # get all the sales
     sales = Sales.objects.all()
     context = {'sales': sales}
@@ -103,3 +103,7 @@ def reorts(request):
     # context = {'sales': sales}
     # # render the template with the shift-wise sales data
     return render(request, 'station/reports/reports.html')
+
+
+def handler404(request, exception):
+    return HttpResponseNotFound(render(request, 'station/404.html'))
