@@ -32,13 +32,15 @@ def home(request):
 
 
 def sales_report(request):
+    # get all the sales
     sales = Sales.objects.all()
-    total_sales = sales.aggregate(total=Sum('total_amount'))['total']
-    return render(request, 'station/reports/sales_report.html', {'sales': sales, 'total_sales': total_sales})
+    context = {'sales': sales}
+    # render the template with the shift-wise sales data
+    return render(request, 'station/reports/sales_report.html', context)
 
 
 def stock_report(request):
-    st = Stock.objects.all()
+    st = Inventory.objects.all()
 
     context = {'st': st}
 
@@ -46,7 +48,7 @@ def stock_report(request):
 
 
 def order_report(request):
-    orders = Order.objects.all()
+    orders = OrderItem.objects.all()
     return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
 
@@ -83,3 +85,21 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+
+def shift_sale_report(request):
+
+
+    # get all the sales
+    sales = Sales.objects.all()
+    context = {'sales': sales}
+    # render the template with the shift-wise sales data
+    return render(request, 'station/reports/sales_report.html', context)
+
+
+def reorts(request):
+    # get all the sales
+    # sales = Sales.objects.all()
+    # context = {'sales': sales}
+    # # render the template with the shift-wise sales data
+    return render(request, 'station/reports/reports.html')

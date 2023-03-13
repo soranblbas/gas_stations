@@ -10,12 +10,18 @@
 </style>
 
 {% block content %}
+
+    <h1>Stock Report</h1>
     <table class="table table-bordered" id="stock">
 
         <thead>
         <tr>
             <th>Station</th>
             <th>Item</th>
+            <th>Stock Invoice</th>
+            <th>Purchased Quantity</th>
+            <th>Sale Invoice</th>
+            <th>Sold Quantity</th>
             <th>Stock Balance</th>
         </tr>
         </thead>
@@ -24,7 +30,11 @@
             <tr>
                 <td>{{ i.gas_station }}</td>
                 <td>{{ i.item }}</td>
-                <td>{{ i.quantity }}</td>
+                <td>{{ i.stock.invoice_number }}</td>
+                <td>{{ i.pur_qty }}</td>
+                <td>{{ i.sale.invoice_number }}</td>
+                <td>{{ i.sale_qty }}</td>
+                <td>{{ i.total_bal_qty }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -32,11 +42,13 @@
         <tfoot>
 
         <th></th>
-  <th></th>
-
+        <th></th>
+        <th></th>
         <th style="background-color: #e8c3c7"></th>
+        <th></th>
+        <th></th>
 
-
+   <th></th>
 
         </tfoot>
 

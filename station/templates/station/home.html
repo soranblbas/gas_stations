@@ -30,6 +30,8 @@
             background-color: #fff;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             margin: 20px;
+            border-radius: 10px;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -78,20 +80,20 @@
 <div class="dashboard">
     <div class="dashboard__box dashboard__box--sale">
 
-        <a href="admin/station/s_invoice/add/"> <h2>Sale / المبيعات</h2></a>
+        <a href="admin/station/s_invoice/add/" style=" text-decoration: none"><h2>Sale / المبيعات</h2></a>
     </div>
     <div class="dashboard__box dashboard__box--order">
-        <h2> Order / الطلبية</h2>
+
+        <a href="admin/station/order/add/" style=" text-decoration: none"><h2> Order / الطلبية</h2></a>
     </div>
     <div class="dashboard__box dashboard__box--reports">
-        <h2> Reports / التقارير</h2>
-        <a href="admin/station/s_invoice/add/"> <h2>Sale / المبيعات</h2></a>
+
+        <a href="{% url 'reports' %}" style=" text-decoration: none"><h2> Reports / التقارير</h2></a>
     </div>
 
 
     <div class="dashboard__box dashboard__box--reports">
-        <a href="{% url 'logout' %}"> <h2>Logout</h2></a>
-        <a href="admin/station/s_invoice/add/"> <h2>Sale / المبيعات</h2></a>
+        <a href="{% url 'logout' %}" style=" text-decoration: none"><h2>Logout</h2></a>
     </div>
 </div>
 </body>

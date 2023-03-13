@@ -1,10 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'station/base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+
+
+    <style>
+        table, th, td {
+            border: 0.5px solid;
+
+        }
+
+
+    </style>
+
+    <h1>Sales Report</h1>
+    <table class="table table-bordered" id="sale">
+        <thead>
+        <tr>
+            <th>Invoice Number</th>
+            <th>Shift</th>
+            <th>Gas Station</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Total Sales</th>
+            <th>Invoice Date</th>
+            <th>User</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in sales %}
+            <tr>
+                <td>{{ i.sales_invoice.invoice_number }}</td>
+                <td>{{ i.sales_invoice.shift }}</td>
+                <td>{{ i.gas_station }}</td>
+                <td>{{ i.item }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>{{ i.total_amount }}</td>
+                <td>{{ i.sales_invoice.sale_invoice_date }}</td>
+                <td>{{ i.gas_station.user }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+
+        <tfoot>
+
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+
+
+        <th style="background-color: #beecc8"></th>
+        <th></th>
+        <th></th>
+
+
+        </tfoot>
+
+    </table>
+{% endblock %}

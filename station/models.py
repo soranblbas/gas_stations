@@ -177,19 +177,19 @@ class Sales(models.Model):
 
 
 class Order(models.Model):
-    PENDING = 'PN'
-    PROCESSED = 'PR'
-    COMPLETED = 'CM'
+    PN = 'PENDING'
+    PR = 'PROCESSED'
+    CM = 'COMPLETED'
 
     STATUS_CHOICES = (
-        (PENDING, 'Pending'),
-        (PROCESSED, 'processed'),
-        (COMPLETED, 'Completed'),
+        (PN, 'Pending'),
+        (PR, 'processed'),
+        (CM, 'Completed'),
     )
     invoice_number = models.CharField(max_length=10, unique=True, editable=False)
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
     shift = models.CharField(max_length=20, blank=True, null=True)
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PN)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
