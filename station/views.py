@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import IntegerField
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
-from django.db.models import Sum, Case, When, F, Max, Min
+from django.db.models import Sum, Case, When, F, Max
 from django.views.generic import TemplateView
 from pyexpat.errors import messages
 
@@ -41,8 +41,8 @@ def sales_report(request):
 
 
 def stock_report(request):
-    # st = Inventory.objects.all()
-    st = Inventory.objects.values_list('item').annotate(last_bal_qty=Min('total_bal_qty')).order_by('-id')
+    st = Inventory.objects.all()
+    # st = Inventory.objects.values('item').annotate(last_bal_qty=MIN('total_bal_qty')).order_by('-id')
 
     context = {'st': st}
 
