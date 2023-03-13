@@ -100,12 +100,13 @@ class S_Invoice(models.Model):
 
         if not self.shift:
             now = timezone.now()
-            if now.hour >= 8 and now.hour < 4:
+            hour = now.hour
+            if hour >= 8 and hour < 16:
                 self.shift = 'morning'
-            elif now.hour >= 4 and now.hour < 12:
-                self.shift = 'afternoon'
-            else:
+            elif hour >= 16 and hour < 24:
                 self.shift = 'evening'
+            else:
+                self.shift = 'night'
 
         super().save(*args, **kwargs)
 
@@ -210,12 +211,13 @@ class Order(models.Model):
 
             if not self.shift:
                 now = timezone.now()
-                if now.hour >= 6 and now.hour < 14:
+                hour = now.hour
+                if hour >= 8 and hour < 16:
                     self.shift = 'morning'
-                elif now.hour >= 14 and now.hour < 22:
-                    self.shift = 'afternoon'
-                else:
+                elif hour >= 16 and hour < 24:
                     self.shift = 'evening'
+                else:
+                    self.shift = 'night'
 
         super().save(*args, **kwargs)
 
