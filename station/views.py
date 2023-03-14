@@ -9,6 +9,7 @@ from django.db.models import Sum, Case, When, F, Max
 from django.views.generic import TemplateView
 from pyexpat.errors import messages
 
+from .filters import Sales_Filter
 from .models import *
 
 from django.shortcuts import render, redirect
@@ -32,14 +33,17 @@ def home(request):
         return render(request, 'station/login.html', {'form': form})
 
 
+@login_required()
 def sales_report(request):
-    # get all the sales
-    sales = Sales.objects.all()
-    context = {'sales': sales}
-    # render the template with the shift-wise sales data
+    s_reports = Sales.objects.select_related()
+    myFilter = Sales_Filter(request.GET, queryset=s_reports)
+    s_reports = myFilter.qs
+
+    context = {'s_reports': s_reports, 'myFilter': myFilter}
     return render(request, 'station/reports/sales_report.html', context)
 
 
+@login_required()
 def stock_report(request):
     st = Inventory.objects.all()
     # st = Inventory.objects.values('item').annotate(last_bal_qty=MIN('total_bal_qty')).order_by('-id')
@@ -48,12 +52,12 @@ def stock_report(request):
 
     return render(request, 'station/reports/stock_report.html', context)
 
-
+@login_required()
 def order_report(request):
-    orders = OrderItem.objects.all()
+    orders = OrderItem.objects.select_related()
     return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
-
+@login_required()
 def station_report(request):
     stations = GasStation.objects.all()
     sales = []
@@ -88,7 +92,7 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
-
+@login_required()
 def shift_sale_report(request):
     # get all the sales
     sales = Sales.objects.all()
@@ -96,7 +100,7 @@ def shift_sale_report(request):
     # render the template with the shift-wise sales data
     return render(request, 'station/reports/sales_report.html', context)
 
-
+@login_required()
 def reorts(request):
     # get all the sales
     # sales = Sales.objects.all()

@@ -20,6 +20,8 @@
             <th>Item</th>
             <th>Stock Invoice</th>
             <th>Purchased Quantity</th>
+            <th>Purchased Date</th>
+            <th>Sale date</th>
             <th>Sale Invoice</th>
             <th>Sold Quantity</th>
             <th>Stock Balance</th>
@@ -32,6 +34,8 @@
                 <td>{{ i.item }}</td>
                 <td>{{ i.stock.invoice_number }}</td>
                 <td>{{ i.pur_qty }}</td>
+                <td>{{ i.stock.created_at.date }}</td>
+                <td>{{ i.sale.sale_invoice_date }}</td>
                 <td>{{ i.sale.invoice_number }}</td>
                 <td>{{ i.sale_qty }}</td>
                 <td>{{ i.total_bal_qty }}</td>
@@ -40,15 +44,17 @@
         </tbody>
 
         <tfoot>
-
         <th></th>
-        <th></th>
-        <th></th>
-        <th style="background-color: #e8c3c7"></th>
         <th></th>
         <th></th>
 
-   <th></th>
+        <th style="background-color: #91efa8"></th>
+        <th></th>
+        <th></th>
+
+        <th></th>
+        <th style="background-color: #91efa8"></th>
+        <th></th>
 
         </tfoot>
 

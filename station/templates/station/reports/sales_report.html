@@ -13,7 +13,20 @@
 
     </style>
 
-    <h1>Sales Report</h1>
+
+    <form class="form-a">
+
+
+        Start date: <input type="date" value={{ myFilter.form.max_date }}</input>
+        End Date: <input type="date" value={{ myFilter.form.min_date }}</input>
+        <button type="submit" class="btn btn-b">Search</button>
+
+
+    </form>
+
+
+
+
     <table class="table table-bordered" id="sale">
         <thead>
         <tr>
@@ -24,11 +37,11 @@
             <th>Quantity</th>
             <th>Total Sales</th>
             <th>Invoice Date</th>
-            <th>User</th>
+            <th>Account</th>
         </tr>
         </thead>
         <tbody>
-        {% for i in sales %}
+        {% for i in s_reports %}
             <tr>
                 <td>{{ i.sales_invoice.invoice_number }}</td>
                 <td>{{ i.sales_invoice.shift }}</td>

@@ -24,7 +24,8 @@
             <th>Quantity</th>
             <th>States</th>
             <th>Invoice Date</th>
-            <th>User</th>
+            <th>Account</th>
+            <th>Note</th>
         </tr>
         </thead>
         <tbody>
@@ -36,8 +37,9 @@
                 <td>{{ i.item }}</td>
                 <td>{{ i.quantity }}</td>
                 <td>{{ i.order.status }}</td>
-                <td>{{ i.order.created_at }}</td>
+                <td>{{ i.order.created_at.date }}</td>
                 <td>{{ i.order.gas_station.user }}</td>
+                <td>{{ i.order.note }}</td>
 
             </tr>
         {% endfor %}
@@ -54,8 +56,9 @@
         <th style="background-color: #beecc8"></th>
         <th></th>
         <th></th>
+        <th></th>
 
- <th></th>
+        <th></th>
         </tfoot>
 
     </table>

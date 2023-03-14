@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 import uuid
+from django.core.exceptions import ValidationError
 
 
 class station(models.Model):
@@ -44,6 +45,7 @@ class Item(models.Model):
 
 class Stock_Invoice(models.Model):
     invoice_number = models.CharField(max_length=8, unique=True, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.invoice_number}"
@@ -52,7 +54,6 @@ class Stock_Invoice(models.Model):
         if not self.invoice_number:
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
-
         super().save(*args, **kwargs)
 
 
@@ -61,6 +62,7 @@ class Stock(models.Model):
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
+    note = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.gas_station.station.name} - {self.item.name} - {self.quantity}"
@@ -84,7 +86,9 @@ class Stock(models.Model):
             sale=None,
             pur_qty=self.quantity,
             sale_qty=None,
-            total_bal_qty=totalBal
+            total_bal_qty=totalBal,
+
+
         )
 
 
@@ -92,8 +96,12 @@ class S_Invoice(models.Model):
     invoice_number = models.CharField(max_length=8, unique=True, editable=False)
     shift = models.CharField(max_length=20, blank=True, null=True)
     sale_invoice_date = models.DateField(auto_now_add=True)
+    note = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
+
+        # if not self.sales.exists():
+        #     raise ValidationError("An S_Invoice must have at least one associated Sale.")
         if not self.invoice_number:
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
@@ -168,7 +176,9 @@ class Sales(models.Model):
             sale=self.sales_invoice,
             pur_qty=None,
             sale_qty=self.quantity,
-            total_bal_qty=totalBal
+            total_bal_qty=totalBal,
+
+
         )
 
         #
@@ -193,6 +203,8 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PN)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    order_delivered = models.BooleanField(default=False)
+    note = models.TextField(blank=True)
 
     class Meta:
         ordering = ['-updated_at']
@@ -205,6 +217,7 @@ class Order(models.Model):
         return user.is_superuser
 
     def save(self, *args, **kwargs):
+
         if not self.invoice_number:
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
@@ -240,6 +253,7 @@ class Inventory(models.Model):
     pur_qty = models.FloatField(default=0, null=True)
     sale_qty = models.FloatField(default=0, null=True)
     total_bal_qty = models.FloatField(default=0)
+
 
     class Meta:
         verbose_name_plural = 'Stock Details'

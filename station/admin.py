@@ -164,7 +164,8 @@ class OrderAdmin(admin.ModelAdmin):
             return [f for f in fields if f != 'status']
         return fields
 
-    list_display = ('invoice_number', 'shift',)
+    list_display = ('invoice_number', 'shift', 'gas_station', 'status', 'created_at', 'updated_at',
+                    'order_delivered', 'note',)
     readonly_fields = ('shift',)
 
     def get_queryset(self, request):
