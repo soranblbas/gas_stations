@@ -15,6 +15,9 @@ class station(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'وێستگەكان'
+
 
 class GasStation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -27,12 +30,18 @@ class GasStation(models.Model):
     def __str__(self):
         return str(self.station)
 
+    class Meta:
+        verbose_name_plural = 'وێستگەو بەكارهێنەرەكان'
+
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
     price = models.PositiveIntegerField(default=1)
     production_date = models.DateField()
     expire_date = models.DateField()
+
+    class Meta:
+        verbose_name_plural = 'مواد'
 
     def __str__(self):
         return f"{self.name} - {self.price}"
@@ -46,6 +55,9 @@ class Item(models.Model):
 class Stock_Invoice(models.Model):
     invoice_number = models.CharField(max_length=8, unique=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'زیادكردن بۆ مەخزەن'
 
     def __str__(self):
         return f"{self.invoice_number}"
@@ -63,6 +75,9 @@ class Stock(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     note = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name_plural = 'مەخزەن'
 
     def __str__(self):
         return f"{self.gas_station.station.name} - {self.item.name} - {self.quantity}"
@@ -87,7 +102,6 @@ class Stock(models.Model):
             pur_qty=self.quantity,
             sale_qty=None,
             total_bal_qty=totalBal,
-
 
         )
 
@@ -136,6 +150,9 @@ class S_Invoice(models.Model):
 
     get_station_numbers.short_description = "Station Numbers"
 
+    class Meta:
+        verbose_name_plural = 'فرۆشتن'
+
 
 class Sales(models.Model):
     sales_invoice = models.ForeignKey(S_Invoice, on_delete=models.CASCADE, related_name='sales')
@@ -144,6 +161,9 @@ class Sales(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=6, decimal_places=2, default=0, editable=False)
     sale_date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'فرۆشتن'
 
     def __str__(self):
         return f"{self.gas_station.station.name} - {self.item.name} - {self.quantity} - {self.total_amount}"
@@ -178,7 +198,6 @@ class Sales(models.Model):
             sale_qty=self.quantity,
             total_bal_qty=totalBal,
 
-
         )
 
         #
@@ -207,7 +226,7 @@ class Order(models.Model):
     note = models.TextField(blank=True)
 
     class Meta:
-        ordering = ['-updated_at']
+        verbose_name_plural = 'داواكردن'
 
     def __str__(self):
         return f"Order {self.id} ({self.get_status_display()}) by {self.gas_station.user}"
@@ -254,9 +273,8 @@ class Inventory(models.Model):
     sale_qty = models.FloatField(default=0, null=True)
     total_bal_qty = models.FloatField(default=0)
 
-
     class Meta:
-        verbose_name_plural = 'Stock Details'
+        verbose_name_plural = 'وردەکاری مەخزەن'
 
     def __str__(self):
         return str(self.item)
