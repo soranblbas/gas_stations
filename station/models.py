@@ -151,7 +151,7 @@ class S_Invoice(models.Model):
     get_station_numbers.short_description = "Station Numbers"
 
     class Meta:
-        verbose_name_plural = 'فرۆشتن'
+        verbose_name_plural = 'پسولەی فرۆشتن'
 
 
 class Sales(models.Model):
