@@ -23,7 +23,7 @@ SECRET_KEY = "django-insecure-45z&ryhna-k1$01-1h&o_e5hkf7qtu@5_-d7u!&kjbmx3wanwp
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['https://kurdneft-refreshment.herokuapp.com/']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
