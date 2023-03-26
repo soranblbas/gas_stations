@@ -23,7 +23,7 @@ SECRET_KEY = "django-insecure-45z&ryhna-k1$01-1h&o_e5hkf7qtu@5_-d7u!&kjbmx3wanwp
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['kurdneft-refreshment.herokuapp.com']
+ALLOWED_HOSTS = ['kurdneft-refreshment.herokuapp.com','*']
 
 # Application definition
 
@@ -90,10 +90,10 @@ WSGI_APPLICATION = "gas_stations.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ddu7hf3179chle',
-        'USER': 'ielhlpzqicyqog',
-        'PASSWORD': 'acbeb73fbacb415e2725ab7f6b28bb90c21d7b3f16d35180185bd0ffa0b385ba',
-        'HOST': 'ec2-54-208-11-146.compute-1.amazonaws.com',
+        'NAME': 'd3h4r1qolvt0c',
+        'USER': 'lxymcnqcyliydw',
+        'PASSWORD': '67a9985612458c5f3e14cb3f033ee050738716d05605db10987af4557799b926',
+        'HOST': 'ec2-52-45-200-167.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -149,9 +149,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'my-cache-table',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'my-cache-table',
+#     }
+# }
