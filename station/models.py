@@ -151,7 +151,7 @@ class S_Invoice(models.Model):
     get_station_numbers.short_description = "Station Numbers"
 
     class Meta:
-        verbose_name_plural = 'فرۆشتن'
+        verbose_name_plural = 'پسولەی فرۆشتن'
 
 
 class Sales(models.Model):
@@ -163,7 +163,7 @@ class Sales(models.Model):
     sale_date = models.DateField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = 'فرۆشتن'
+        verbose_name_plural = 'بەشی فروشتن'
 
     def __str__(self):
         return f"{self.gas_station.station.name} - {self.item.name} - {self.quantity} - {self.total_amount}"
