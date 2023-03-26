@@ -23,7 +23,7 @@ SECRET_KEY = "django-insecure-45z&ryhna-k1$01-1h&o_e5hkf7qtu@5_-d7u!&kjbmx3wanwp
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['kurdneft-refreshment.herokuapp.com','*']
+ALLOWED_HOSTS = ['kurdneft-refreshment.herokuapp.com', '*']
 
 # Application definition
 
@@ -155,3 +155,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 #         'LOCATION': 'my-cache-table',
 #     }
 # }
+
+# LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

@@ -52,10 +52,12 @@ def stock_report(request):
 
     return render(request, 'station/reports/stock_report.html', context)
 
+
 @login_required()
 def order_report(request):
     orders = OrderItem.objects.select_related()
     return render(request, 'station/reports/orders_report.html', {'orders': orders})
+
 
 @login_required()
 def station_report(request):
@@ -92,6 +94,7 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+
 @login_required()
 def shift_sale_report(request):
     # get all the sales
@@ -99,6 +102,7 @@ def shift_sale_report(request):
     context = {'sales': sales}
     # render the template with the shift-wise sales data
     return render(request, 'station/reports/sales_report.html', context)
+
 
 @login_required()
 def reorts(request):
