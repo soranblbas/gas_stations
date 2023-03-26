@@ -231,6 +231,6 @@ class InventoryAdmin(admin.ModelAdmin):
 # admin.site.register(GasStation, GasStationAdmin)
 admin.site.register(Sales, SalesAdmin)
 
-admin.site.site_header = "Gas Station Admin"
+admin.site.site_header = "Gas Station Portal"
 admin.site.site_title = "Gas Station  Admin Portal"
 admin.site.index_title = "Welcome to Gas Station  Portal"
