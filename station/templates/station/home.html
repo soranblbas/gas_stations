@@ -73,11 +73,35 @@
         body {
             background-color: #c9d9ee; /* replace with your preferred color */
         }
+        .hidden {
+    display: none;
+}
+
 
     </style>
 </head>
 <body>
 <div class="dashboard">
+
+    {% if request.user.is_superuser %}
+        <div class="dashboard__box dashboard__box--reports">
+
+            <a href="admin" style=" text-decoration: none"><h2> Admin</h2></a>
+        </div>
+            <div class="dashboard__box dashboard__box--reports">
+
+        <a href="{% url 'reports' %}" style=" text-decoration: none"><h2> Reports / التقارير</h2></a>
+    </div>
+
+
+{% else %}
+    <div class="hidden">
+        <h1>You don't have permission</h1>
+    </div>
+{% endif %}
+
+
+
     <div class="dashboard__box dashboard__box--sale">
 
         <a href="admin/station/s_invoice/add/" style=" text-decoration: none"><h2>Sale / المبيعات</h2></a>
@@ -85,10 +109,6 @@
     <div class="dashboard__box dashboard__box--order">
 
         <a href="admin/station/order/add/" style=" text-decoration: none"><h2> Order / الطلبية</h2></a>
-    </div>
-    <div class="dashboard__box dashboard__box--reports">
-
-        <a href="{% url 'reports' %}" style=" text-decoration: none"><h2> Reports / التقارير</h2></a>
     </div>
 
 

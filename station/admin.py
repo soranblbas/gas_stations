@@ -1,3 +1,5 @@
+from django.forms import HiddenInput
+
 from .models import *
 from django.contrib import admin
 from django.contrib import admin
@@ -7,6 +9,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+
+from django.core.exceptions import ValidationError
 
 
 # class SalesItem(admin.TabularInline):
@@ -147,6 +151,9 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
 
+    class Meta:
+        model = Order
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "gas_station":
             if request.user.is_superuser:
@@ -165,7 +172,7 @@ class OrderAdmin(admin.ModelAdmin):
         return fields
 
     list_display = ('invoice_number', 'shift', 'gas_station', 'status', 'created_at', 'updated_at',
-                    'order_delivered', 'note',)
+                    'order_delivered',)
     readonly_fields = ('shift',)
 
     def get_queryset(self, request):
@@ -173,6 +180,8 @@ class OrderAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(gas_station__user=request.user)
+
+    # Staff and admin fields permission
 
 
 @admin.register(Item)
@@ -229,7 +238,7 @@ class InventoryAdmin(admin.ModelAdmin):
 
 
 # admin.site.register(GasStation, GasStationAdmin)
-admin.site.register(Sales, SalesAdmin)
+# admin.site.register(Sales, SalesAdmin)
 
 admin.site.site_header = "Gas Station Portal"
 admin.site.site_title = "Gas Station  Admin Portal"
