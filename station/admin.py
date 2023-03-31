@@ -214,15 +214,15 @@ class GasStationAdmin(admin.ModelAdmin):
     list_display = ('user', 'station', 'address', 'city', 'state', 'zip_code',)
 
 
-@admin.register(Stock)
-class StockAdmin(admin.ModelAdmin):
-    list_display = ('stock_invoice', 'gas_station', 'item', 'quantity',)
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(gas_station__user=request.user)
+# @admin.register(Stock)
+# class StockAdmin(admin.ModelAdmin):
+#     list_display = ('stock_invoice', 'gas_station', 'item', 'quantity',)
+#
+#     def get_queryset(self, request):
+#         qs = super().get_queryset(request)
+#         if request.user.is_superuser:
+#             return qs
+#         return qs.filter(gas_station__user=request.user)
 
 
 @admin.register(Inventory)
