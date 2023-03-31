@@ -74,7 +74,7 @@ class Stock(models.Model):
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
-    note = models.TextField(blank=True)
+    note = models.CharField(blank=True, max_length=50)
 
     class Meta:
         verbose_name_plural = 'مەخزەن'
