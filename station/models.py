@@ -234,7 +234,7 @@ class Order(models.Model):
 
     # Make the status field visible only to superusers
     def status_visible_to(self, user):
-        return not user.is_superuser
+        return user.is_superuser
 
     def save(self, *args, **kwargs):
 
