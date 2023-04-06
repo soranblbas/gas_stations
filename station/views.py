@@ -1,14 +1,14 @@
 from multiprocessing import Value
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import Group, Permission
 from django.forms import IntegerField
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.db.models import Sum, Case, When, F, Max
 from django.views.generic import TemplateView
 from pyexpat.errors import messages
-
+from django.contrib import messages
 from .filters import Sales_Filter
 from .models import *
 
@@ -35,28 +35,62 @@ def home(request):
 
 @login_required()
 def sales_report(request):
-    s_reports = Sales.objects.select_related()
-    myFilter = Sales_Filter(request.GET, queryset=s_reports)
-    s_reports = myFilter.qs
+    if request.user.groups.filter(
+            name__in=['Admin', 'Operation', 'Finance']).exists() or request.user.is_superuser:
+        s_reports = Sales.objects.select_related()
+        myFilter = Sales_Filter(request.GET, queryset=s_reports)
+        s_reports = myFilter.qs
+        context = {'s_reports': s_reports, 'myFilter': myFilter}
+        return render(request, 'station/reports/sales_report.html', {'s_reports': s_reports})
 
-    context = {'s_reports': s_reports, 'myFilter': myFilter}
-    return render(request, 'station/reports/sales_report.html', context)
+    else:
+        # show a message pop-up and redirect to the home page
+        message = "You do not have permission to access this page."
+        return render(request, 'station/reports/permission_denied.html', {'message': message})
+
+    # s_reports = Sales.objects.select_related()
+    # myFilter = Sales_Filter(request.GET, queryset=s_reports)
+    # s_reports = myFilter.qs
+    #
+    # context = {'s_reports': s_reports, 'myFilter': myFilter}
+    # return render(request, 'station/reports/sales_report.html', context)
 
 
 @login_required()
 def stock_report(request):
-    st = Inventory.objects.all()
-    # st = Inventory.objects.values('item').annotate(last_bal_qty=MIN('total_bal_qty')).order_by('-id')
+    if request.user.groups.filter(
+            name__in=['Admin', 'Operation', 'Marketing']).exists() or request.user.is_superuser:
+        st = Inventory.objects.all()
 
-    context = {'st': st}
+        context = {'st': st}
 
-    return render(request, 'station/reports/stock_report.html', context)
+        return render(request, 'station/reports/stock_report.html', context)
+
+    else:
+        message = "You do not have permission to access this page."
+        return render(request, 'station/reports/permission_denied.html', {'message': message})
+    # st = Inventory.objects.all()
+    # # st = Inventory.objects.values('item').annotate(last_bal_qty=MIN('total_bal_qty')).order_by('-id')
+    #
+    # context = {'st': st}
+    #
+    # return render(request, 'station/reports/stock_report.html', context)
 
 
 @login_required()
 def order_report(request):
-    orders = OrderItem.objects.select_related()
-    return render(request, 'station/reports/orders_report.html', {'orders': orders})
+    if request.user.groups.filter(
+            name__in=['Admin', 'Operation']).exists() or request.user.is_superuser:
+        orders = OrderItem.objects.select_related()
+        return render(request, 'station/reports/orders_report.html', {'orders': orders})
+
+    else:
+        message = "You do not have permission to access this page."
+        return render(request, 'station/reports/permission_denied.html', {'message': message})
+
+
+# orders = OrderItem.objects.select_related()
+# return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
 
 @login_required()

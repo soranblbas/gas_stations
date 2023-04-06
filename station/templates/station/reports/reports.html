@@ -93,7 +93,7 @@
 </head>
 <body style="background-color: #c9d9ee">
 <div class="container">
-    {% if request.user.is_superuser %}
+
         <div class="box">
             <a href="{% url 'sales_report' %}" style=" text-decoration: none"><h2>Sales</h2></a>
 
@@ -107,14 +107,6 @@
         <div class="box">
             <a href="{% url 'stock_report' %}" style=" text-decoration: none"><h2>Stock</h2></a>
         </div>
-    {% else %}
-
-
-        <h1>You don't have permission</h1>
-
-
-    {% endif %}
-
 
 </div>
 </body>

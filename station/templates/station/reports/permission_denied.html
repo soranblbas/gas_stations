@@ -1,0 +1,8 @@
+{% if message %}
+    <script>
+        alert('{{ message }}');
+
+
+        window.location.href = "{% url 'home' %}";
+    </script>
+{% endif %}

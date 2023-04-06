@@ -111,11 +111,8 @@ class S_Invoice(models.Model):
     shift = models.CharField(max_length=20, blank=True, null=True)
     sale_invoice_date = models.DateField(auto_now_add=True)
 
-
     def save(self, *args, **kwargs):
 
-        # if not self.sales.exists():
-        #     raise ValidationError("An S_Invoice must have at least one associated Sale.")
         if not self.invoice_number:
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
@@ -225,7 +222,6 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     order_delivered = models.BooleanField(default=False)
 
-
     class Meta:
         verbose_name_plural = 'داواكردن'
 
@@ -263,6 +259,10 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"
+
+    class Meta:
+        verbose_name_plural = 'بەشی داواكردن'
+
 
 
 # Inventories
