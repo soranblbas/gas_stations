@@ -97,7 +97,7 @@ def order_report(request):
 @login_required()
 def station_report(request):
     if request.user.groups.filter(
-            name__in=['Admin', 'Operation']).exists() or request.user.is_superuser:
+            name__in=['Admin', 'Operation', 'Marketing']).exists() or request.user.is_superuser:
         stations = GasStation.objects.all()
         sales = []
         for station in stations:
