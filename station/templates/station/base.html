@@ -208,6 +208,53 @@
             ],
         });
 
+         $('#station_sale').DataTable({
+
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'print',
+                    footer: true,
+                    title: "<div class='text-center'>ملخض المبيعات لكل فرع</div>",
+                    customize: function (win) {
+                        $(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                '<img src="https://media.licdn.com/dms/image/C560BAQF6BEFbF-JPsg/company-logo_200_200/0/1519868333465?e=2147483647&v=beta&t=inH125pnFt-OF8dxp_ta2k_v4ThFhcYLArNV1xoCmsA" style="position:relative; top:0; left:0; height: 40px" width="40px" />'
+                            );
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ],
+
+
+            drawCallback: function () {
+                var api = this.api();
+                var sum = 0;
+                var formated = 0;
+                //to show first th
+                $(api.column(0).footer()).html('Total');
+
+                for (var i = 1; i <= 1; i++) {
+                    sum = api.column(i, {page: 'current'}).data().sum();
+
+                    //to format this sum
+                    formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits: 2});
+                    $(api.column(i).footer()).html('' + formated);
+                }
+
+            },
+            columnDefs: [
+                //{targets: 0, visible:false},
+                {
+                    targets: 1, className: "my-class"
+                }
+            ],
+        });
+
     });
 
 

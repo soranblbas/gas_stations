@@ -84,23 +84,24 @@
 <body>
 <div class="dashboard">
 
-{#    {% if request.user.is_superuser %}#}
-{#        <div class="dashboard__box dashboard__box--reports">#}
-{##}
-{#            <a href="admin" style=" text-decoration: none"><h2> Admin</h2></a>#}
-{#        </div>#}
-{##}
-{##}
-{##}
-{#    {% else %}#}
-{#        <div class="hidden">#}
-{#            <h1>You don't have permission</h1>#}
-{#        </div>#}
-{#    {% endif %}#}
+    {#    {% if request.user.is_superuser %}#}
+    {#        <div class="dashboard__box dashboard__box--reports">#}
+    {##}
+    {#            <a href="admin" style=" text-decoration: none"><h2> Admin</h2></a>#}
+    {#        </div>#}
+    {##}
+    {##}
+    {##}
+    {#    {% else %}#}
+    {#        <div class="hidden">#}
+    {#            <h1>You don't have permission</h1>#}
+    {#        </div>#}
+    {#    {% endif %}#}
 
     <div class="dashboard__box dashboard__box--reports">
-
-        <a href="{% url 'reports' %}" style=" text-decoration: none"><h2> Reports / التقارير</h2></a>
+        <a href="{% url 'reports' %}" style="text-decoration: none">
+            <h2>Reports / التقارير</h2>
+        </a>
     </div>
 
     <div class="dashboard__box dashboard__box--sale">
@@ -112,8 +113,6 @@
         <a href="{% url 'logout' %}" style=" text-decoration: none"><h2>Logout</h2></a>
     </div>
 </div>
-
-
 
 
 </body>

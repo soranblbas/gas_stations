@@ -25,7 +25,7 @@
             <th>States</th>
             <th>Invoice Date</th>
             <th>Account</th>
-            <th>Note</th>
+            <th>Created by</th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
                 <td>{{ i.order.status }}</td>
                 <td>{{ i.order.created_at.date }}</td>
                 <td>{{ i.order.gas_station.user }}</td>
-                <td>{{ i.order.note }}</td>
+                <td>{{ i.note }}</td>
 
             </tr>
         {% endfor %}

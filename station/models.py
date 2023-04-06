@@ -255,14 +255,13 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
-    note = models.CharField(blank=True, max_length=50)
+    note = models.CharField(blank=True, verbose_name="write your name?", max_length=50)
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"
 
     class Meta:
         verbose_name_plural = 'بەشی داواكردن'
-
 
 
 # Inventories
