@@ -1,5 +1,7 @@
 import secrets
 from datetime import date, timezone
+
+from django.conf import settings
 from django.utils import timezone
 
 from django.db import models
@@ -20,7 +22,7 @@ class station(models.Model):
 
 
 class GasStation(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     station = models.ForeignKey(station, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
@@ -221,19 +223,21 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     order_delivered = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=2,editable=False)
 
     class Meta:
         verbose_name_plural = 'داواكردن'
 
     def __str__(self):
-        return f"Order {self.id} ({self.get_status_display()}) by {self.gas_station.user}"
+        return f"Order {self.id} ({self.get_status_display()}) by {self.gas_station}"
 
     # Make the status field visible only to superusers
     def status_visible_to(self, user):
         return user.is_superuser
 
     def save(self, *args, **kwargs):
-
+        if not self.gas_station:
+            self.gas_station = self.gas_station.user
         if not self.invoice_number:
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
@@ -256,6 +260,7 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     note = models.CharField(blank=True, verbose_name="write your name?", max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=2,editable=False)
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"

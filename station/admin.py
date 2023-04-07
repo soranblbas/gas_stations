@@ -162,14 +162,14 @@ class OrderAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = GasStation.objects.filter(user=request.user)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    # Hide the status field when creating a new order
+    # Show the status field only to users in the "Gas Station Managers" group
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj=obj)
         if obj is None:
             return [f for f in fields if f != 'status']
-        elif not obj.status_visible_to(request.user):
-            return [f for f in fields if f != 'status']
-        return fields
+        elif request.user.groups.filter(name='Marketing').exists():
+            return fields
+        return [f for f in fields if f != 'status']
 
     list_display = ('invoice_number', 'shift', 'gas_station', 'status', 'created_at', 'updated_at',
                     'order_delivered',)
@@ -211,7 +211,7 @@ class StationAdmin(admin.ModelAdmin):
 
 @admin.register(GasStation)
 class GasStationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'station', 'address', 'city', 'state', 'zip_code',)
+    list_display = ('address', 'city', 'state', 'zip_code',)
 
 
 # @admin.register(Stock)
