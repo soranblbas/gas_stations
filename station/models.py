@@ -259,7 +259,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
-    note = models.CharField(blank=True, verbose_name="write your name?", max_length=50)
+    note = models.CharField(blank=True, verbose_name="write your name?", max_length=50,null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=13,editable=False)
 
     def __str__(self):
