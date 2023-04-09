@@ -223,7 +223,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     order_delivered = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=2,editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=13,editable=False)
 
     class Meta:
         verbose_name_plural = 'داواكردن'
@@ -260,7 +260,7 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     note = models.CharField(blank=True, verbose_name="write your name?", max_length=50)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=2,editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=13,editable=False)
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"
