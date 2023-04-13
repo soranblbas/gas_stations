@@ -160,7 +160,7 @@ class Sales(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=6, decimal_places=2, default=0, editable=False)
     sale_date = models.DateField(auto_now_add=True)
-    note = models.CharField(blank=True, max_length=50)
+    note = models.CharField(blank=True,verbose_name="write your name?",max_length=50)
 
     class Meta:
         verbose_name_plural = 'بەشی فروشتن'
