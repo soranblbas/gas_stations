@@ -173,7 +173,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     list_display = ('invoice_number', 'shift', 'gas_station', 'status', 'created_at', 'updated_at',
                     'order_delivered',)
-    readonly_fields = ('shift','total_amount')
+    readonly_fields = ('shift')
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
