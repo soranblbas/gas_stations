@@ -160,7 +160,7 @@ class Sales(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=6, decimal_places=2, default=0, editable=False)
     sale_date = models.DateField(auto_now_add=True)
-    note = models.CharField(blank=True,verbose_name="write your name?",max_length=50)
+    note = models.CharField(blank=True, max_length=50)
 
     class Meta:
         verbose_name_plural = 'بەشی فروشتن'
@@ -223,7 +223,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     order_delivered = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=13,editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
 
     class Meta:
         verbose_name_plural = 'داواكردن'
@@ -258,15 +258,34 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(verbose_name="Set",default=0)
-    note = models.CharField(blank=True, verbose_name="write your name?", max_length=50)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=13,editable=False)
+    quantity = models.PositiveIntegerField(verbose_name="Set", default=0)
+    note = models.CharField(blank=True, verbose_name="write your name?", max_length=50, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
+    total_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"
 
     class Meta:
         verbose_name_plural = 'بەشی داواكردن'
+
+    def save(self, *args, **kwargs):
+
+        if self.item.name == 'Red bull':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 24
+
+        if self.item.name == '	Water':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 12
+        if self.item.name == '		Pepsi Glass':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 24
+        if self.item.name == 'Pepsi Can':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        super().save(*args, **kwargs)
 
 
 # Inventories
