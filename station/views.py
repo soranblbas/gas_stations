@@ -81,9 +81,21 @@ def stock_report(request):
 @login_required()
 def order_report(request):
     if request.user.groups.filter(
-            name__in=['Admin', 'Operation', 'Marketing', 'Finance']).exists() or request.user.is_superuser:
+            name__in=['Admin', 'Operation', 'Marketing']).exists() or request.user.is_superuser:
         orders = OrderItem.objects.select_related()
         return render(request, 'station/reports/orders_report.html', {'orders': orders})
+
+    else:
+        message = "You do not have permission to access this page."
+        return render(request, 'station/reports/permission_denied.html', {'message': message})
+
+
+@login_required()
+def complted_order_report(request):
+    if request.user.groups.filter(
+            name__in=['Admin', 'Operation', 'Marketing', 'Finance']).exists() or request.user.is_superuser:
+        orders = OrderItem.objects.select_related().filter(order__status='COMPLETED')
+        return render(request, 'station/reports/completed_orders_report.html', {'orders': orders})
 
     else:
         message = "You do not have permission to access this page."

@@ -17,5 +17,5 @@ urlpatterns = [
                   path('logout', views.logoutUser, name="logout"),
                   path('sales_report', views.sales_report, name="sales_report"),
                   path('reports', views.reorts, name="reports"),
-
+                  path('completed_order', views.complted_order_report, name="completed_order"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
