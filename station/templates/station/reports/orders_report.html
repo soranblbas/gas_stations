@@ -19,9 +19,10 @@
         <tr>
             <th>Invoice Number</th>
             <th>Shift</th>
-{#            <th>Gas Station</th>#}
+            {#            <th>Gas Station</th>#}
             <th>Item</th>
-            <th>Quantity</th>
+            <th>Set</th>
+            <th>Total Quantity</th>
             <th>States</th>
             <th>Invoice Date</th>
             <th>Account</th>
@@ -33,9 +34,10 @@
             <tr>
                 <td>{{ i.order.invoice_number }}</td>
                 <td>{{ i.order.shift }}</td>
-{#                <td>{{ i.order.gas_station }}</td>#}
+                {#                <td>{{ i.order.gas_station }}</td>#}
                 <td>{{ i.item }}</td>
                 <td>{{ i.quantity }}</td>
+                <td>{{ i.total_amount }}</td>
                 <td>{{ i.order.status }}</td>
                 <td>{{ i.order.created_at.date }}</td>
                 <td>{{ i.order.gas_station.station }}</td>
@@ -52,13 +54,12 @@
         <th></th>
 
 
-
+        <th style="background-color: #beecc8"></th>
         <th style="background-color: #beecc8"></th>
         <th></th>
         <th></th>
         <th></th>
-  <th></th>
-
+        <th></th>
         </tfoot>
 
     </table>
