@@ -145,6 +145,7 @@ class SalesAdmin(admin.ModelAdmin):
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
+    readonly_fields = ('total_amount',)
 
 
 @admin.register(Order)

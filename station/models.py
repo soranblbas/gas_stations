@@ -261,6 +261,31 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(verbose_name="Set", default=0)
     note = models.CharField(blank=True, verbose_name="write your name?", max_length=50, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
+    total_amount = models.DecimalField(max_digits=20, verbose_name="Quantities", decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.item.name} - {self.quantity}"
+
+    class Meta:
+        verbose_name_plural = 'بەشی داواكردن'
+
+    def save(self, *args, **kwargs):
+
+        if self.item.name == 'Red bull':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 24
+
+        if self.item.name == 'Water':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 12
+        if self.item.name == 'Pepsi Glass':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 24
+        if self.item.name == 'Pepsi Can':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"
