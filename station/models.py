@@ -261,7 +261,6 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(verbose_name="Set", default=0)
     note = models.CharField(blank=True, verbose_name="write your name?", max_length=50, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
-    total_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.item.name} - {self.quantity}"
