@@ -172,7 +172,7 @@ class Sales(models.Model):
     sales_invoice = models.ForeignKey(S_Invoice, on_delete=models.CASCADE, related_name='sales')
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE, related_name='sales')
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.PositiveIntegerField(default=0,max_length=20)
     total_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0, editable=False)
     sale_date = models.DateField(auto_now_add=True)
     note = models.CharField(null=False, verbose_name="Write your name", max_length=50)
