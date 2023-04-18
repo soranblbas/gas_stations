@@ -37,7 +37,7 @@ def home(request):
 @login_required()
 def sales_report(request):
     if request.user.groups.filter(
-            name__in=['Admin', 'Operation', 'Finance', 'Marketing']).exists() or request.user.is_superuser:
+            name__in=['Admin','Finance', 'Marketing']).exists() or request.user.is_superuser:
         s_reports = Sales.objects.select_related()
         myFilter = Sales_Filter(request.GET, queryset=s_reports)
         s_reports = myFilter.qs
@@ -81,7 +81,7 @@ def stock_report(request):
 @login_required()
 def order_report(request):
     if request.user.groups.filter(
-            name__in=['Admin', 'Operation', 'Marketing', 'Finance']).exists() or request.user.is_superuser:
+            name__in=['Admin','Marketing', 'Finance','Operation']).exists() or request.user.is_superuser:
         orders = OrderItem.objects.select_related()
         return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
@@ -93,7 +93,7 @@ def order_report(request):
 @login_required()
 def complted_order_report(request):
     if request.user.groups.filter(
-            name__in=['Admin', 'Operation', 'Marketing', 'Finance']).exists() or request.user.is_superuser:
+            name__in=['Operation']).exists() or request.user.is_superuser:
         orders = OrderItem.objects.select_related().filter(order__status='COMPLETED')
         return render(request, 'station/reports/completed_orders_report.html', {'orders': orders})
 
@@ -109,7 +109,7 @@ def complted_order_report(request):
 @login_required()
 def station_report(request):
     if request.user.groups.filter(
-            name__in=['Admin', 'Operation', 'Marketing']).exists() or request.user.is_superuser:
+            name__in=['Admin','Marketing']).exists() or request.user.is_superuser:
         stations = GasStation.objects.all()
         sales = []
         for station in stations:
