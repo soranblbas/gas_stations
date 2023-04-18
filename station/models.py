@@ -261,11 +261,11 @@ class Order(models.Model):
                 now = timezone.now()
                 hour = now.hour
                 if hour >= 8 and hour < 16:
-                    self.shift = 'morning'
+                    self.shift = 'B.morning'
                 elif hour >= 16 and hour < 24:
-                    self.shift = 'evening'
+                    self.shift = 'C.evening'
                 else:
-                    self.shift = 'night'
+                    self.shift = 'A.night'
 
         super().save(*args, **kwargs)
 
