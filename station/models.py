@@ -76,7 +76,7 @@ class Stock(models.Model):
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     set = models.PositiveIntegerField(default=0)
-    note = models.CharField(blank=True, max_length=50)
+    note = models.CharField(null=False, verbose_name="Write your name", max_length=50)
     total_amount = models.DecimalField(max_digits=20, verbose_name="Quantities", decimal_places=2, default=0)
 
     class Meta:
