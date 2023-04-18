@@ -268,7 +268,7 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name_plural = 'بەشی داواكردن'
 
-    
+
 # Inventories
 class Inventory(models.Model):
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
