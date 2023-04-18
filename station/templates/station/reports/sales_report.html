@@ -38,6 +38,7 @@
             <th>Total Sales</th>
             <th>Invoice Date</th>
             <th>Account</th>
+            <th>Created by</th>
         </tr>
         </thead>
         <tbody>
@@ -51,7 +52,7 @@
                 <td>{{ i.total_amount }}</td>
                 <td>{{ i.sales_invoice.sale_invoice_date }}</td>
                 <td>{{ i.gas_station.station }}</td>
-
+                <td>{{ i.note }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -68,7 +69,7 @@
         <th style="background-color: #beecc8"></th>
         <th></th>
         <th></th>
-
+        <th></th>
 
         </tfoot>
 
