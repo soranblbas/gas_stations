@@ -114,6 +114,8 @@ class ProfileAdmin(admin.ModelAdmin):
     class Meta:
         model = Stock_Invoice
 
+    readonly_fields = ('total_amount',)
+
     # list_display = ('invoice_number', 'customer_name')
 
 

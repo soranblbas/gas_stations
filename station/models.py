@@ -75,16 +75,31 @@ class Stock(models.Model):
     stock_invoice = models.ForeignKey(Stock_Invoice, on_delete=models.CASCADE, related_name='sales')
     gas_station = models.ForeignKey(GasStation, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    set = models.PositiveIntegerField(default=0)
     note = models.CharField(blank=True, max_length=50)
+    total_amount = models.DecimalField(max_digits=20, verbose_name="Quantities", decimal_places=2, default=0)
 
     class Meta:
         verbose_name_plural = 'مەخزەن'
 
     def __str__(self):
-        return f"{self.gas_station.station.name} - {self.item.name} - {self.quantity}"
+        return f"{self.gas_station.station.name} - {self.item.name} - {self.set}"
 
     def save(self, *args, **kwargs):
+
+        if self.item.name == 'Red bull':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.set * 24
+
+        if self.item.name == 'Water':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.set * 12
+        if self.item.name == 'Pepsi Glass':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.set * 24
+        if self.item.name == 'Pepsi Can':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.set * 30
 
         super(Stock, self).save(*args, **kwargs)
 
@@ -92,16 +107,16 @@ class Stock(models.Model):
         inventory = Inventory.objects.filter(gas_station=self.gas_station, item=self.item).order_by('-id').first()
 
         if inventory:
-            totalBal = inventory.total_bal_qty + self.quantity
+            totalBal = inventory.total_bal_qty + self.total_amount
         else:
-            totalBal = self.quantity
+            totalBal = self.total_amount
 
         Inventory.objects.create(
             gas_station=self.gas_station,
             item=self.item,
             stock=self.stock_invoice,
             sale=None,
-            pur_qty=self.quantity,
+            pur_qty=self.total_amount,
             sale_qty=None,
             total_bal_qty=totalBal,
 
