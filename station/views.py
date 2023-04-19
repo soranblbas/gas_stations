@@ -93,7 +93,7 @@ def order_report(request):
 @login_required()
 def complted_order_report(request):
     if request.user.groups.filter(
-            name__in=['Operation']).exists() or request.user.is_superuser:
+            name__in=['Operation','Finance']).exists() or request.user.is_superuser:
         orders = OrderItem.objects.select_related().filter(order__status='COMPLETED')
         return render(request, 'station/reports/completed_orders_report.html', {'orders': orders})
 
