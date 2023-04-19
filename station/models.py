@@ -200,7 +200,7 @@ class Sales(models.Model):
 
         inventory = Inventory.objects.filter(gas_station=self.gas_station, item=self.item).order_by('-id').first()
         if inventory:
-            totalBal = inventory.total_bal_qty - float(self.quantity)
+            totalBal = inventory.total_bal_qty - self.quantity
         else:
             totalBal = 0
 
