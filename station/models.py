@@ -1,4 +1,4 @@
-try import secrets
+import secrets
 from datetime import date, timezone
 
 from django.conf import settings
