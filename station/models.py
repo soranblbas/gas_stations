@@ -127,7 +127,7 @@ class Stock(models.Model):
 class S_Invoice(models.Model):
     invoice_number = models.CharField(max_length=8, unique=True, editable=False)
     shift = models.CharField(max_length=20, blank=True, null=True)
-    sale_invoice_date = models.DateField(auto_now_add=True)
+    sale_invoice_date = models.DateTimeField(verbose_name='Invoice Date')
 
     def save(self, *args, **kwargs):
 

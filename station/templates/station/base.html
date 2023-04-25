@@ -254,7 +254,53 @@
                 }
             ],
         });
+         $('#example8').DataTable({
 
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'print',
+                    footer: true,
+                    title: '<center><p> ملخص المخزن</p></center>',
+
+                    customize: function (win) {
+                        $(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                {#'<img src="http://datatables.net/media/images/logo-fade.png" style="position:relative; top:0; left:0;" />'#}
+                            );
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ],
+
+
+            drawCallback: function () {
+                var api = this.api();
+                var sum = 0;
+                var formated = 0;
+                //to show first th
+                $(api.column(0).footer()).html('Total');
+
+                for (var i = 1; i <= 3; i++) {
+                    sum = api.column(i, {page: 'current'}).data().sum();
+
+                    //to format this sum
+                    formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits: 2});
+                    $(api.column(i).footer()).html('' + formated);
+                }
+
+            },
+            columnDefs: [
+                //{targets: 0, visible:false},
+                {
+                    targets: 1, className: "my-class"
+                }
+            ],
+        });
     });
 
 

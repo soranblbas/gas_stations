@@ -37,7 +37,7 @@ def home(request):
 @login_required()
 def sales_report(request):
     if request.user.groups.filter(
-            name__in=['Admin','Finance', 'Marketing']).exists() or request.user.is_superuser:
+            name__in=['Admin', 'Finance', 'Marketing']).exists() or request.user.is_superuser:
         s_reports = Sales.objects.select_related()
         myFilter = Sales_Filter(request.GET, queryset=s_reports)
         s_reports = myFilter.qs
@@ -81,7 +81,7 @@ def stock_report(request):
 @login_required()
 def order_report(request):
     if request.user.groups.filter(
-            name__in=['Admin','Marketing', 'Finance','Operation']).exists() or request.user.is_superuser:
+            name__in=['Admin', 'Marketing', 'Finance', 'Operation']).exists() or request.user.is_superuser:
         orders = OrderItem.objects.select_related()
         return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
@@ -109,7 +109,7 @@ def complted_order_report(request):
 @login_required()
 def station_report(request):
     if request.user.groups.filter(
-            name__in=['Admin','Marketing']).exists() or request.user.is_superuser:
+            name__in=['Admin', 'Marketing']).exists() or request.user.is_superuser:
         stations = GasStation.objects.all()
         sales = []
         for station in stations:
@@ -168,6 +168,8 @@ def reorts(request):
 
 def handler404(request, exception):
     return HttpResponseNotFound(render(request, 'station/404.html'))
+
+
 #
 #
 # def item_stock(request):
@@ -191,3 +193,16 @@ def handler404(request, exception):
 #         station = item_stock_dict[item_name][station_name]
 #     context = {'item_stock_dict': item_stock_dict}
 #     return render(request, 'station/reports/item_stock.html', context)
+# def item_balance(request):
+#     items = Inventory.objects.all().order_by('item__name').distinct('item__name')
+#     item_list = []
+#     for item in items:
+#         stock_details = Inventory.objects.filter(item=item.item).order_by('-id')[0]
+#         pur_qty = stock_details.pur_qty if stock_details.pur_qty is not None else 0
+#         sale_qty = stock_details.sale_qty if stock_details.sale_qty is not None else 0
+#         total_bal_qty = stock_details.total_bal_qty if stock_details.total_bal_qty is not None else 0
+#         if sale_qty:
+#             total_bal_qty -= sale_qty
+#         item_list.append({'item': item.item, 'total_bal_qty': total_bal_qty})
+#     return render(request, 'station/reports/item_balance.html', {'item_list': item_list})
+

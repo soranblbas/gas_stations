@@ -88,7 +88,7 @@ class S_InvoiceAdmin(admin.ModelAdmin):
 
     list_display = ('invoice_number', 'total_sales_amount', 'get_station_numbers', 'shift', 'sale_invoice_date',)
     readonly_fields = ('shift',)
-    list_filter = ('shift', 'sale_invoice_date',)
+    # list_filter = ('shift', 'sale_invoice_date',)
 
 
 #
