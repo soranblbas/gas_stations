@@ -88,19 +88,8 @@ class Stock(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.item.name == 'Red bull':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-
-        if self.item.name == 'Water':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 12
-        if self.item.name == 'Pepsi Glass':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-        if self.item.name == 'Pepsi Can':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
+         
+            self.total_amount = self.set * 1
 
         super(Stock, self).save(*args, **kwargs)
 
@@ -291,19 +280,7 @@ class OrderItem(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.item.name == 'Red bull':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.quantity * 24
-
-        if self.item.name == 'Water':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.quantity * 12
-        if self.item.name == 'Pepsi Glass':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.quantity * 24
-        if self.item.name == 'Pepsi Can':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.quantity * 30
+        self.total_amount = self.quantity
 
         super().save(*args, **kwargs)
 
