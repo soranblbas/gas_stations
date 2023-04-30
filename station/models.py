@@ -89,7 +89,7 @@ class Stock(models.Model):
     def save(self, *args, **kwargs):
 
          
-            self.total_amount = self.set
+            self.total_amount = self.set * 1
 
         super(Stock, self).save(*args, **kwargs)
 
