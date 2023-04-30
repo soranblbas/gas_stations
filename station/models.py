@@ -291,7 +291,7 @@ class OrderItem(models.Model):
 
     def save(self, *args, **kwargs):
 
-        
+        self.total_amount = self.quantity
 
         super().save(*args, **kwargs)
 
