@@ -179,7 +179,6 @@ class S_Invoice(models.Model):
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
 
-
         if not self.shift:
             now = timezone.now()
             hour = now.hour
@@ -189,7 +188,6 @@ class S_Invoice(models.Model):
                 self.shift = 'C.evening'
             if hour > 24 and hour < 8:
                 self.shift = 'A.night'
-
 
 
         super().save(*args, **kwargs)
