@@ -1,6 +1,6 @@
 import secrets
 from datetime import date, timezone
-import pytz
+
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.utils import timezone
@@ -88,61 +88,63 @@ class Stock(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.item.name == 'Red bull':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-
-        if self.item.name == 'Water':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 12
-
-        if self.item.name == 'Pepsi Glass':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-
-        if self.item.name == 'Pepsi Can':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Seven UP Can Lemon flavored':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Pepsi diet':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Pepsi Can Shani':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Seven UP Can Non-flavored':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Seven UP Glass Non-flavored':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-
-        if self.item.name == 'Seven UP Glass Lemon flavored':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-
-        if self.item.name == 'Dew Can Green':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Miranda Glass Yellow':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
-
-        if self.item.name == 'Miranda Can Yellow':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 30
-
-        if self.item.name == 'Dew Glass Green':
-            # Generate a random 8 character invoice number
-            self.total_amount = self.set * 24
+        self.total_amount = self.set
+        #
+        # if self.item.name == 'Red bull':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
+        #
+        # if self.item.name == 'Water':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 12
+        #
+        # if self.item.name == 'Pepsi Glass':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
+        #
+        # if self.item.name == 'Pepsi Can':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Can Lemon flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Pepsi diet':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Pepsi Can Shani':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Can Non-flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Glass Non-flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
+        #
+        # if self.item.name == 'Seven UP Glass Lemon flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
+        #
+        # if self.item.name == 'Dew Can Green':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Miranda Glass Yellow':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
+        #
+        # if self.item.name == 'Miranda Can Yellow':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Dew Glass Green':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
 
         super(Stock, self).save(*args, **kwargs)
 
@@ -177,21 +179,18 @@ class S_Invoice(models.Model):
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
 
+
         if not self.shift:
-            # Set the time zone to Iraq's time zone (Arabia Standard Time)
-            iraq_tz = pytz.timezone('Asia/Baghdad')
-
-            # Get the current time in Iraq
-            now = timezone.now().astimezone(iraq_tz)
-
-            # Calculate the shift based on the current time in Iraq
+            now = timezone.now()
             hour = now.hour
-            if hour < 8:
-                self.shift = 'C.Night'
-            elif hour < 16:
-                self.shift = 'B.Morning'
-            else:
-                self.shift = 'A.Evening'
+            if hour >= 8 and hour <= 16:
+                self.shift = 'B.morning'
+            if hour > 16 and hour <= 24:
+                self.shift = 'C.evening'
+            if hour > 24 and hour < 8:
+                self.shift = 'A.night'
+
+
 
         super().save(*args, **kwargs)
 
@@ -215,10 +214,6 @@ class S_Invoice(models.Model):
 
     class Meta:
         verbose_name_plural = 'بفرۆشە'
-
-    def clean(self):
-        if not self.total_sales_amount:
-            raise ValueError('hhhh')
 
 
 class Sales(models.Model):
@@ -315,20 +310,14 @@ class Order(models.Model):
             self.invoice_number = secrets.token_hex(4).upper()
 
             if not self.shift:
-                # Set the time zone to Iraq's time zone (Arabia Standard Time)
-                iraq_tz = pytz.timezone('Asia/Baghdad')
-
-                # Get the current time in Iraq
-                now = timezone.now().astimezone(iraq_tz)
-
-                # Calculate the shift based on the current time in Iraq
+                now = timezone.now()
                 hour = now.hour
-                if hour < 8:
-                    self.shift = 'C.Night'
-                elif hour < 16:
-                    self.shift = 'B.Morning'
+                if hour >= 8 and hour < 16:
+                    self.shift = 'B.morning'
+                elif hour >= 16 and hour < 24:
+                    self.shift = 'C.evening'
                 else:
-                    self.shift = 'A.Evening'
+                    self.shift = 'A.night'
 
         super().save(*args, **kwargs)
 
