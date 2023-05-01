@@ -192,6 +192,8 @@ class S_Invoice(models.Model):
              self.shift = 'C.night'
 
 
+
+
         super().save(*args, **kwargs)
 
     def __str__(self):
