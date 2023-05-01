@@ -179,6 +179,7 @@ class S_Invoice(models.Model):
             # Generate a random 8 character invoice number
             self.invoice_number = secrets.token_hex(4).upper()
 
+
         if not self.shift:
             now = timezone.now()
             hour = now.hour
