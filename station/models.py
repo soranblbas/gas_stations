@@ -189,7 +189,6 @@ class S_Invoice(models.Model):
             if hour > 24 and hour < 8:
                 self.shift = 'A.night'
 
-
         super().save(*args, **kwargs)
 
     def __str__(self):
