@@ -124,13 +124,13 @@ class Stock(models.Model):
         #
         # if self.item.name == 'Seven UP Glass Non-flavored':
         #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.set * 30
+        #     self.total_amount = self.set * 24
         #
         # if self.item.name == 'Seven UP Glass Lemon flavored':
         #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.set * 30
+        #     self.total_amount = self.set * 24
         #
-        # if self.item.name == 'Dia Can Green':
+        # if self.item.name == 'Dew Can Green':
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 30
         #
@@ -138,7 +138,11 @@ class Stock(models.Model):
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 24
         #
-        # if self.item.name == 'Dio Glass Green':
+        # if self.item.name == 'Miranda Can Yellow':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Dew Glass Green':
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 24
 
@@ -365,13 +369,13 @@ class OrderItem(models.Model):
 
         if self.item.name == 'Seven UP Glass Non-flavored':
             # Generate a random 8 character invoice number
-            self.total_amount = self.quantity * 30
+            self.total_amount = self.quantity * 24
 
         if self.item.name == 'Seven UP Glass Lemon flavored':
             # Generate a random 8 character invoice number
-            self.total_amount = self.quantity * 30
+            self.total_amount = self.quantity * 24
 
-        if self.item.name == 'Dia Can Green':
+        if self.item.name == 'Dew Can Green':
             # Generate a random 8 character invoice number
             self.total_amount = self.quantity * 30
 
@@ -379,7 +383,11 @@ class OrderItem(models.Model):
             # Generate a random 8 character invoice number
             self.total_amount = self.quantity * 24
 
-        if self.item.name == 'Dio Glass Green':
+        if self.item.name == 'Miranda Can Yellow':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Dew Glass Green':
             # Generate a random 8 character invoice number
             self.total_amount = self.quantity * 24
 
