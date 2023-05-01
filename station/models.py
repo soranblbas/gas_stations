@@ -88,7 +88,6 @@ class Stock(models.Model):
 
     def save(self, *args, **kwargs):
 
-
         if self.item.name == 'Red bull':
             # Generate a random 8 character invoice number
             self.total_amount = self.set * 24
@@ -316,14 +315,20 @@ class Order(models.Model):
             self.invoice_number = secrets.token_hex(4).upper()
 
             if not self.shift:
-                now = timezone.now()
+                # Set the time zone to Iraq's time zone (Arabia Standard Time)
+                iraq_tz = pytz.timezone('Asia/Baghdad')
+
+                # Get the current time in Iraq
+                now = timezone.now().astimezone(iraq_tz)
+
+                # Calculate the shift based on the current time in Iraq
                 hour = now.hour
-                if hour >= 8 and hour < 16:
-                    self.shift = 'B.morning'
-                elif hour >= 16 and hour < 24:
-                    self.shift = 'C.evening'
+                if hour < 8:
+                    self.shift = 'C.Night'
+                elif hour < 16:
+                    self.shift = 'B.Morning'
                 else:
-                    self.shift = 'A.night'
+                    self.shift = 'A.Evening'
 
         super().save(*args, **kwargs)
 
