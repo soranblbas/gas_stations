@@ -89,7 +89,7 @@ class Stock(models.Model):
     def save(self, *args, **kwargs):
 
         self.total_amount = self.set
-
+        #
         # if self.item.name == 'Red bull':
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 24
@@ -97,12 +97,50 @@ class Stock(models.Model):
         # if self.item.name == 'Water':
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 12
+        #
         # if self.item.name == 'Pepsi Glass':
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 24
+        #
         # if self.item.name == 'Pepsi Can':
         #     # Generate a random 8 character invoice number
         #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Can Lemon flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Pepsi diet':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Pepsi Can Shani':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Can Non-flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Glass Non-flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Seven UP Glass Lemon flavored':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Dia Can Green':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 30
+        #
+        # if self.item.name == 'Miranda Glass Yellow':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
+        #
+        # if self.item.name == 'Dio Glass Green':
+        #     # Generate a random 8 character invoice number
+        #     self.total_amount = self.set * 24
 
         super(Stock, self).save(*args, **kwargs)
 
@@ -300,20 +338,52 @@ class OrderItem(models.Model):
         if self.item.name == 'Water':
             # Generate a random 8 character invoice number
             self.total_amount = self.quantity * 12
+
         if self.item.name == 'Pepsi Glass':
             # Generate a random 8 character invoice number
             self.total_amount = self.quantity * 24
+
         if self.item.name == 'Pepsi Can':
             # Generate a random 8 character invoice number
             self.total_amount = self.quantity * 30
 
+        if self.item.name == 'Seven UP Can Lemon flavored':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Pepsi diet':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Pepsi Can Shani':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Seven UP Can Non-flavored':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Seven UP Glass Non-flavored':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Seven UP Glass Lemon flavored':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Dia Can Green':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 30
+
+        if self.item.name == 'Miranda Glass Yellow':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 24
+
+        if self.item.name == 'Dio Glass Green':
+            # Generate a random 8 character invoice number
+            self.total_amount = self.quantity * 24
+
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.item.name} - {self.quantity}"
-
-    class Meta:
-        verbose_name_plural = 'بەشی داواكردن'
 
 
 # Inventories
