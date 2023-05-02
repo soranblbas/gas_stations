@@ -69,11 +69,22 @@ class S_InvoiceAdmin(admin.ModelAdmin):
         return format_html('<b>{}</b>', station_number)
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
+        queryset = super().get_queryset(request)
+        user = request.user
+        if user.is_superuser:
+            return queryset
         else:
-            return qs.filter(sales__gas_station__user=request.user)
+            return queryset.filter(sales__gas_station__user=user).distinct()
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and not request.user.is_superuser:
+            return obj.sales.filter(gas_station__user=request.user).exists()
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and not request.user.is_superuser:
+            return obj.sales.filter(gas_station__user=request.user).exists()
+        return super().has_delete_permission(request, obj)
 
     # def save_model(self, request, obj, form, change):
     #     if not change:
