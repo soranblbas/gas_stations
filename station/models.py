@@ -188,11 +188,11 @@ class S_Invoice(models.Model):
             # Calculate the shift based on the current time in Iraq
             hour = now.hour
             if hour < 8:
-                self.shift = 'C.Night'
+                self.shift = 'A.Night'
             elif hour < 16:
                 self.shift = 'B.Morning'
             else:
-                self.shift = 'A.Evening.'
+                self.shift = 'C.Evening.'
 
         super().save(*args, **kwargs)
 
@@ -321,11 +321,11 @@ class Order(models.Model):
                 # Calculate the shift based on the current time in Iraq
                 hour = now.hour
                 if hour < 8:
-                    self.shift = 'C.Night'
+                    self.shift = 'A.Night'
                 elif hour < 16:
                     self.shift = 'B.Morning'
                 else:
-                    self.shift = 'A.Evening.'
+                    self.shift = 'C.Evening.'
 
         super().save(*args, **kwargs)
 
