@@ -114,13 +114,13 @@
         });
 
         $('#sale').DataTable({
-
+            "pageLength": 50
             dom: 'Bfrtip',
             buttons: [
                 {
                     extend: 'print',
                     footer: true,
-                    title: "<div class='text-center'>ملخض المبيعات</div>",
+                    title: "<div class='text-center'>ملخص المبيعات</div>",
                     customize: function (win) {
                         $(win.document.body)
                             .css('font-size', '10pt')
