@@ -42,7 +42,7 @@ def sales_report(request):
         myFilter = Sales_Filter(request.GET, queryset=s_reports)
         s_reports = myFilter.qs
         context = {'s_reports': s_reports, 'myFilter': myFilter}
-        return render(request, 'station/reports/sales_report.html', {'s_reports': s_reports})
+        return render(request, 'station/reports/sales_report.html',context )
 
     else:
         # show a message pop-up and redirect to the home page
