@@ -96,7 +96,7 @@
                 //to show first th
                 $(api.column(0).footer()).html('Total');
 
-                for (var i = 3; i <= 7; i+=4) {
+                for (var i = 3; i <= 7; i += 4) {
                     sum = api.column(i, {page: 'current'}).data().sum();
 
                     //to format this sum
@@ -114,7 +114,8 @@
         });
 
         $('#sale').DataTable({
-             
+            "pageLength": 100,
+
             dom: 'Bfrtip',
             buttons: [
                 {
@@ -136,21 +137,20 @@
             ],
 
 
-            drawCallback: function () {
+                       drawCallback: function () {
                 var api = this.api();
-                var sum = 0;
-                var formated = 0;
-                //to show first th
-                $(api.column(0).footer()).html('Total');
 
-                for (var i = 4; i <= 5; i++) {
-                    sum = api.column(i, {page: 'current'}).data().sum();
+                // Calculate the subtotal and grand total for field 4
+                var pageTotal4 = api.column(4, {page: 'current'}).data().sum();
+                $(api.column(4).footer()).html('Subtotal: ' + pageTotal4.toLocaleString(undefined, {minimumFractionDigits: 2}));
+                var grandTotal4 = api.column(4).data().sum();
+                $(api.column(4).footer()).append('<br>Grand Total: ' + grandTotal4.toLocaleString(undefined, {minimumFractionDigits: 2}));
 
-                    //to format this sum
-                    formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits: 2});
-                    $(api.column(i).footer()).html('' + formated);
-                }
-
+                // Calculate the subtotal and grand total for field 5
+                var pageTotal5 = api.column(5, {page: 'current'}).data().sum();
+                $(api.column(5).footer()).html('Subtotal: ' + pageTotal5.toLocaleString(undefined, {minimumFractionDigits: 2}));
+                var grandTotal5 = api.column(5).data().sum();
+                $(api.column(5).footer()).append('<br>Grand Total: ' + grandTotal5.toLocaleString(undefined, {minimumFractionDigits: 2}));
             },
             columnDefs: [
                 //{targets: 0, visible:false},
@@ -208,8 +208,8 @@
             ],
         });
 
-         $('#station_sale').DataTable({
-
+        $('#station_sale').DataTable({
+            "pageLength": 50,
             dom: 'Bfrtip',
             buttons: [
                 {
@@ -254,7 +254,7 @@
                 }
             ],
         });
-         $('#example8').DataTable({
+        $('#example8').DataTable({
 
             dom: 'Bfrtip',
             buttons: [
