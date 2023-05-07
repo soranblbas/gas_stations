@@ -200,7 +200,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'production_date', 'expire_date', 'days_until_expiry')
+    list_display = ('name', 'price','set_property', 'production_date', 'expire_date', 'days_until_expiry')
     readonly_fields = ('days_until_expiry',)
 
     def days_until_expiry(self, obj):
