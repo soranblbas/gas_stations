@@ -67,7 +67,7 @@
 
 
         $('#stock').DataTable({
-
+            "pageLength": 100,
             dom: 'Bfrtip',
             buttons: [
                 {
@@ -137,7 +137,7 @@
             ],
 
 
-                       drawCallback: function () {
+            drawCallback: function () {
                 var api = this.api();
 
                 // Calculate the subtotal and grand total for field 4
@@ -162,7 +162,7 @@
 
 
         $('#order').DataTable({
-
+            "pageLength": 100,
             dom: 'Bfrtip',
             buttons: [
                 {
@@ -255,7 +255,7 @@
             ],
         });
         $('#example8').DataTable({
-
+            "pageLength": 100,
             dom: 'Bfrtip',
             buttons: [
                 {
