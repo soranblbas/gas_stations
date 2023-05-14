@@ -188,6 +188,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('invoice_number', 'shift', 'gas_station', 'status', 'created_at', 'updated_at',
                     'order_delivered',)
     readonly_fields = ('shift',)
+    list_filter = ('order_delivered', 'shift', 'status', 'gas_station',)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -200,7 +201,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price','set_property', 'production_date', 'expire_date', 'days_until_expiry')
+    list_display = ('name', 'price', 'set_property', 'production_date', 'expire_date', 'days_until_expiry')
     readonly_fields = ('days_until_expiry',)
 
     def days_until_expiry(self, obj):
