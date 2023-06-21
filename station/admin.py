@@ -127,7 +127,8 @@ class ProfileAdmin(admin.ModelAdmin):
     class Meta:
         model = Stock_Invoice
 
-    # list_display = ('invoice_number', 'customer_name')
+    list_filter = ('sales__item__name', 'sales__gas_station__station__name','sales__note')
+    list_display = ('get_stock_details',)
 
 
 class GasStationAdmin(admin.ModelAdmin):
@@ -252,8 +253,13 @@ class InventoryAdmin(admin.ModelAdmin):
         return qs.filter(gas_station__user=request.user)
 
 
+# @admin.register(Stock)
+# class InventoryAdmin(admin.ModelAdmin):
+#     list_display = ('gas_station', 'item', 'set', 'total_amount',)
+#     list_filter = ('gas_station', 'item', 'note',)
+
+
 # admin.site.register(GasStation, GasStationAdmin)
-# admin.site.register(Sales, SalesAdmin)
 
 admin.site.site_header = "Gas Station Portal"
 admin.site.site_title = "Gas Station  Admin Portal"

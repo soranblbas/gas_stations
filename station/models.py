@@ -42,8 +42,8 @@ class Item(models.Model):
     name = models.CharField(max_length=255)
     price = models.PositiveIntegerField(default=1)
     set_property = models.PositiveIntegerField(default=1)
-    production_date = models.DateField()
-    expire_date = models.DateField()
+    production_date = models.DateField(auto_now_add=True)
+    expire_date = models.DateField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = 'مواد'
@@ -73,6 +73,21 @@ class Stock_Invoice(models.Model):
             self.invoice_number = secrets.token_hex(4).upper()
         super().save(*args, **kwargs)
 
+    def get_stock_details(self):
+        stock_records = self.sales.all()  # Retrieve related stock records using the 'sales' related_name
+
+        stock_details = []
+        for stock in stock_records:
+            stock_info = {
+                'GAS STATION': stock.gas_station.station.name,
+                'ITEM': stock.item.name,
+                'SET': stock.set,
+                'QUANTITIES': stock.total_amount,
+            }
+            stock_details.append(stock_info)
+
+        return stock_details
+
 
 class Stock(models.Model):
     stock_invoice = models.ForeignKey(Stock_Invoice, on_delete=models.CASCADE, related_name='sales')
@@ -82,8 +97,10 @@ class Stock(models.Model):
     note = models.CharField(null=False, verbose_name="Write your name", max_length=50)
     total_amount = models.DecimalField(max_digits=20, verbose_name="Quantities", decimal_places=2, default=0)
 
+    # created_at = models.DateField(auto_now_add=True)
+
     class Meta:
-        verbose_name_plural = 'مەخزەن'
+        verbose_name_plural = 'زانيارى مەخزەن'
 
     def __str__(self):
         return f"{self.gas_station.station.name} - {self.item.name} - {self.set}"
@@ -238,6 +255,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     order_delivered = models.BooleanField(default=False)
+    note = models.CharField(max_length=100, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
 
     class Meta:
@@ -292,63 +310,6 @@ class OrderItem(models.Model):
 
     def save(self, *args, **kwargs):
         self.total_amount = self.item.set_property * self.quantity
-        # if self.item.name == 'Red bull':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 24
-        #
-        # if self.item.name == 'Water':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 12
-        #
-        # if self.item.name == 'Pepsi Glass':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 24
-        #
-        # if self.item.name == 'Pepsi Can':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-        # if self.item.name == 'Seven UP Can Lemon flavored':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-        # if self.item.name == 'Pepsi diet':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-        # if self.item.name == 'Pepsi Can Shani':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-        # if self.item.name == 'Seven UP Can Non-flavored':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-        # if self.item.name == 'Seven UP Glass Non-flavored':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 24
-        #
-        # if self.item.name == 'Seven UP Glass Lemon flavored':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 24
-        #
-        # if self.item.name == 'Dew Can Green':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-        # if self.item.name == 'Miranda Glass Yellow':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 24
-        #
-        # if self.item.name == 'Miranda Can Yellow':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 30
-        #
-
-        # if self.item.name == 'Dew Glass Green':
-        #     # Generate a random 8 character invoice number
-        #     self.total_amount = self.quantity * 24
-
         super().save(*args, **kwargs)
 
 
@@ -363,7 +324,7 @@ class Inventory(models.Model):
     total_bal_qty = models.FloatField(default=0)
 
     class Meta:
-        verbose_name_plural = 'وردەکاری مەخزەن'
+        verbose_name_plural = 'جوولەی مەخزەن'
 
     def __str__(self):
         return str(self.item)

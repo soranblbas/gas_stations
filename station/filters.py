@@ -13,11 +13,11 @@ class Sales_Filter(django_filters.FilterSet):
         exclude = ['sale_date', ]
 
 
-# class Orders_Filter(django_filters.FilterSet):
+# class Stock_Filter(django_filters.FilterSet):
 #     max_date = DateFilter(field_name='created_at', lookup_expr='gte')
 #     min_date = DateFilter(field_name='created_at', lookup_expr='lte')
 #
 #     class Meta:
-#         model = Order
+#         model = Stock
 #         fields = ['min_date', 'max_date']
-#         exclude = ['created_at', 'updated_at', ]
+#         exclude = ['created_at', ]

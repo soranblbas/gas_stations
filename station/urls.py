@@ -18,6 +18,7 @@ urlpatterns = [
                   path('sales_report', views.sales_report, name="sales_report"),
                   path('reports', views.reorts, name="reports"),
                   path('completed_order', views.complted_order_report, name="completed_order"),
-                  # path('item-balance', views.item_balance, name='item_balance'),
+                  path('item-balance', views.item_balance, name='item_balance'),
+                  # path('stock-balance-report/', views.stock_balance_report, name="stock_balance_report"),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

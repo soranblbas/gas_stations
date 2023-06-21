@@ -10,7 +10,7 @@ from django.db.models import Sum, Case, When, F, Max
 from django.views.generic import TemplateView
 from pyexpat.errors import messages
 from django.contrib import messages
-from .filters import Sales_Filter
+from .filters import *
 from .models import *
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
@@ -42,7 +42,7 @@ def sales_report(request):
         myFilter = Sales_Filter(request.GET, queryset=s_reports)
         s_reports = myFilter.qs
         context = {'s_reports': s_reports, 'myFilter': myFilter}
-        return render(request, 'station/reports/sales_report.html',context )
+        return render(request, 'station/reports/sales_report.html', context)
 
     else:
         # show a message pop-up and redirect to the home page
@@ -61,8 +61,7 @@ def sales_report(request):
 def stock_report(request):
     if request.user.groups.filter(
             name__in=['Admin', 'Operation', 'Marketing', 'Finance']).exists() or request.user.is_superuser:
-        st = Inventory.objects.all()
-
+        st = Inventory.objects.select_related()
         context = {'st': st}
 
         return render(request, 'station/reports/stock_report.html', context)
@@ -169,6 +168,7 @@ def reorts(request):
 def handler404(request, exception):
     return HttpResponseNotFound(render(request, 'station/404.html'))
 
+
 #
 #
 # def item_stock(request):
@@ -192,15 +192,28 @@ def handler404(request, exception):
 #         station = item_stock_dict[item_name][station_name]
 #     context = {'item_stock_dict': item_stock_dict}
 #     return render(request, 'station/reports/item_stock.html', context)
-# def item_balance(request):
-#     items = Inventory.objects.all().order_by('item__name').distinct('item__name')
-#     item_list = []
-#     for item in items:
-#         stock_details = Inventory.objects.filter(item=item.item).order_by('-id')[0]
-#         pur_qty = stock_details.pur_qty if stock_details.pur_qty is not None else 0
-#         sale_qty = stock_details.sale_qty if stock_details.sale_qty is not None else 0
-#         total_bal_qty = stock_details.total_bal_qty if stock_details.total_bal_qty is not None else 0
-#         if sale_qty:
-#             total_bal_qty -= sale_qty
-#         item_list.append({'item': item.item, 'total_bal_qty': total_bal_qty})
-#     return render(request, 'station/reports/item_balance.html', {'item_list': item_list})
+def item_balance(request):
+    items = Item.objects.all().order_by('name')
+    item_list = []
+
+    for item in items:
+        transactions = Inventory.objects.filter(item=item).order_by('stock__created_at')
+        total_purchased = 0
+        total_sold = 0
+        current_balance = 0
+
+        for transaction in transactions:
+            total_purchased += transaction.pur_qty if transaction.pur_qty else 0
+            total_sold += transaction.sale_qty if transaction.sale_qty else 0
+            current_balance += transaction.total_bal_qty if transaction.total_bal_qty else 0
+
+        current_balance = total_purchased - total_sold
+
+        item_list.append({
+            'item': item,
+            'total_purchased': total_purchased,
+            'total_sold': total_sold,
+            'current_balance': current_balance
+        })
+
+    return render(request, 'station/reports/item_balance.html', {'item_list': item_list})

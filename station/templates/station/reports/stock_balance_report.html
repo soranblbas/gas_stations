@@ -1,0 +1,54 @@
+<!-- stock_balance_report.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Balance Report</title>
+</head>
+<body>
+    <h1>Stock Balance Report</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="start_date">Start Date:</label>
+        <input type="date" name="start_date" id="start_date">
+
+        <label for="end_date">End Date:</label>
+        <input type="date" name="end_date" id="end_date">
+
+        <label for="item_id">Item ID:</label>
+        <input type="text" name="item_id" id="item_id">
+
+        <button type="submit">Generate Report</button>
+    </form>
+
+    {% if inventory %}
+        <h2>Inventory:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Item Code</th>
+                    <th>Station Number</th>
+                    <th>Total Purchased</th>
+                    <th>Total Sold</th>
+                    <th>Total Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in inventory %}
+                    <tr>
+                        <td>{{ item.item_id }}</td>
+                        <td>{{ item.item__item_code }}</td>
+                        <td>{{ item.stock__station_number }}</td>
+                        <td>{{ item.total_purchased }}</td>
+                        <td>{{ item.total_sold }}</td>
+                        <td>{{ item.total_balance }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No inventory data available.</p>
+    {% endif %}
+</body>
+</html>
