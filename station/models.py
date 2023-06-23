@@ -240,6 +240,7 @@ class Order(models.Model):
     order_delivered = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
 
+
     class Meta:
         verbose_name_plural = 'داواكردن'
 
