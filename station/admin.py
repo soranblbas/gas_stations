@@ -232,8 +232,9 @@ class GasStationAdmin(admin.ModelAdmin):
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
     list_display = ('stock_invoice', 'gas_station', 'item', 'set',)
-    list_filter = ('item','gas_station',)
-    search_fields = ['invoice_number', 'gas_station__name', 'item__name']
+    list_filter = ('item', 'gas_station',)
+    # search_fields = ['stock_invoice', 'gas_station__name', 'item__name']
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
