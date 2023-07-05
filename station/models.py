@@ -73,6 +73,14 @@ class Stock_Invoice(models.Model):
             self.invoice_number = secrets.token_hex(4).upper()
         super().save(*args, **kwargs)
 
+    # def get_stock_details(self):
+    #     stock_details = Stock.objects.filter(stock_invoice=self)
+    #     return stock_details
+
+    def total_stock_amount(self):
+        total_amount = self.sales.aggregate(total=Sum('total_amount'))['total']
+        return total_amount or 0
+
 
 class Stock(models.Model):
     stock_invoice = models.ForeignKey(Stock_Invoice, on_delete=models.CASCADE, related_name='sales')
@@ -239,7 +247,6 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     order_delivered = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=13, editable=False)
-
 
     class Meta:
         verbose_name_plural = 'داواكردن'

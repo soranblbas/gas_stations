@@ -127,7 +127,7 @@ class ProfileAdmin(admin.ModelAdmin):
     class Meta:
         model = Stock_Invoice
 
-    # list_display = ('invoice_number', 'customer_name')
+    list_display = ('invoice_number', 'total_stock_amount', 'created_at',)
 
 
 class GasStationAdmin(admin.ModelAdmin):
@@ -229,15 +229,16 @@ class GasStationAdmin(admin.ModelAdmin):
     list_display = ('address', 'city', 'state', 'zip_code',)
 
 
-# @admin.register(Stock)
-# class StockAdmin(admin.ModelAdmin):
-#     list_display = ('stock_invoice', 'gas_station', 'item', 'quantity',)
-#
-#     def get_queryset(self, request):
-#         qs = super().get_queryset(request)
-#         if request.user.is_superuser:
-#             return qs
-#         return qs.filter(gas_station__user=request.user)
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+    list_display = ('stock_invoice', 'gas_station', 'item', 'set',)
+    list_filter = ('item','gas_station',)
+    search_fields = ('item',)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
 
 
 @admin.register(Inventory)
