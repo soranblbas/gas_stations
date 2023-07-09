@@ -242,22 +242,17 @@ class StockAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(gas_station__user=request.user)
 
-from django.contrib import admin
-from django.urls import reverse
-from django.utils.html import format_html
-from .models import Inventory
-
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ('gas_station', 'item', 'stock', 'sale', 'pur_qty', 'sale_qty', 'total_bal_qty')
+    list_filter = ('gas_station', 'item',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
 
-    actions = ['filter_inventory']
-
-    def filter_inventory(self, request, queryset):
-        url = reverse('inventory_filter')
-        return format_html('<a href="{}" target="_blank">Filter Inventory</a>', url)
-
-    filter_inventory.short_description = 'Filter Inventory'
 
 
 # admin.site.register(GasStation, GasStationAdmin)
