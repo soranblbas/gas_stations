@@ -1,66 +1,49 @@
 {% extends 'station/base.html' %}
 
 {% block content %}
-
-
-
     <style>
         table, th, td {
             border: 0.5px solid;
-
         }
-
-
     </style>
 
     <h1>Order Report</h1>
+    <form method="get">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+        <button type="submit">Filter</button>
+    </form>
+    <br>
     <table class="table table-bordered" id="order">
         <thead>
-        <tr>
-            <th>Invoice Number</th>
-            <th>Shift</th>
-            {#            <th>Gas Station</th>#}
-            <th>Item</th>
-            <th>Set</th>
-            <th>Total Quantity</th>
-            <th>States</th>
-            <th>Invoice Date</th>
-            <th>Account</th>
-            <th>Created by</th>
-        </tr>
+            <tr>
+                <th>Invoice Number</th>
+                <th>Shift</th>
+                <th>Item</th>
+                <th>Set</th>
+                <th>Total Quantity</th>
+                <th>Status</th>
+                <th>Invoice Date</th>
+                <th>Account</th>
+                <th>Created by</th>
+            </tr>
         </thead>
         <tbody>
-        {% for i in orders %}
-            <tr>
-                <td>{{ i.order.invoice_number }}</td>
-                <td>{{ i.order.shift }}</td>
-                {#                <td>{{ i.order.gas_station }}</td>#}
-                <td>{{ i.item }}</td>
-                <td>{{ i.quantity }}</td>
-                <td>{{ i.total_amount }}</td>
-                <td>{{ i.order.status }}</td>
-                <td>{{ i.order.created_at.date }}</td>
-                <td>{{ i.order.gas_station.station }}</td>
-                <td>{{ i.note }}</td>
-
-            </tr>
-        {% endfor %}
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.order.invoice_number }}</td>
+                    <td>{{ order.order.shift }}</td>
+                    <td>{{ order.item }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_amount }}</td>
+                    <td>{{ order.order.status }}</td>
+                    <td>{{ order.order.created_at.date }}</td>
+                    <td>{{ order.order.gas_station.station }}</td>
+                    <td>{{ order.note }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
-
-        <tfoot>
-
-        <th></th>
-        <th></th>
-        <th></th>
-
-
-        <th style="background-color: #beecc8"></th>
-        <th style="background-color: #beecc8"></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        </tfoot>
-
     </table>
 {% endblock %}

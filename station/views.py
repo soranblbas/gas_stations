@@ -86,17 +86,29 @@ def stock_report(request):
         return render(request, 'station/reports/permission_denied.html', {'message': message})
 
 
-
 @login_required()
 def order_report(request):
     if request.user.groups.filter(
             name__in=['Admin', 'Marketing', 'Finance', 'Operation']).exists() or request.user.is_superuser:
-        orders = OrderItem.objects.select_related()
-        return render(request, 'station/reports/orders_report.html', {'orders': orders})
+        # Check if the request contains date filter parameters
+        start_date_str = request.GET.get('start_date')
+        end_date_str = request.GET.get('end_date')
+
+        # Convert the date strings to datetime objects
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
+
+        # Filter the orders based on the date range
+        orders = OrderItem.objects.select_related('order', 'item')
+        if start_date and end_date:
+            orders = orders.filter(order__created_at__range=(start_date, end_date))
+
+        return render(request, 'station/reports/orders_report.html', {'orders': orders, 'start_date': start_date_str, 'end_date': end_date_str})
 
     else:
         message = "You do not have permission to access this page."
         return render(request, 'station/reports/permission_denied.html', {'message': message})
+
 
 
 @login_required()
