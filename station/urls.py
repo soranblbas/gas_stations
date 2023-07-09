@@ -12,11 +12,10 @@ urlpatterns = [
                   path('stock-report/', views.stock_report, name='stock_report'),
                   path('order-report/', order_report, name='order_report'),
                   path('station-report/', station_report, name='station_report'),
-                  # path('item_stock/', item_stock, name='item_stock'),
                   path('login', views.loginPage, name="login"),
                   path('logout', views.logoutUser, name="logout"),
                   path('sales_report', views.sales_report, name="sales_report"),
-                  path('reports', views.reorts, name="reports"),
+                  path('reports', views.reports, name="reports"),
                   path('completed_order', views.complted_order_report, name="completed_order"),
                   # path('item-balance', views.item_balance, name='item_balance'),
 

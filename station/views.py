@@ -42,7 +42,7 @@ def sales_report(request):
         myFilter = Sales_Filter(request.GET, queryset=s_reports)
         s_reports = myFilter.qs
         context = {'s_reports': s_reports, 'myFilter': myFilter}
-        return render(request, 'station/reports/sales_report.html',context )
+        return render(request, 'station/reports/sales_report.html', context)
 
     else:
         # show a message pop-up and redirect to the home page
@@ -57,25 +57,35 @@ def sales_report(request):
     # return render(request, 'station/reports/sales_report.html', context)
 
 
+from datetime import datetime
+
 @login_required()
 def stock_report(request):
     if request.user.groups.filter(
             name__in=['Admin', 'Operation', 'Marketing', 'Finance']).exists() or request.user.is_superuser:
-        st = Inventory.objects.all()
+        # Check if the request contains date filter parameters
+        start_date_str = request.GET.get('start_date')
+        end_date_str = request.GET.get('end_date')
 
-        context = {'st': st}
+        # Convert the date strings to datetime objects
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else None
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else None
+
+        # Filter the inventory items based on the date range
+        st = Inventory.objects.all()
+        if start_date and end_date:
+            st = st.filter(stock__created_at__range=(start_date, end_date))
+
+        context = {
+            'st': st,
+            'start_date': start_date_str,
+            'end_date': end_date_str
+        }
 
         return render(request, 'station/reports/stock_report.html', context)
-
     else:
         message = "You do not have permission to access this page."
         return render(request, 'station/reports/permission_denied.html', {'message': message})
-    # st = Inventory.objects.all()
-    # # st = Inventory.objects.values('item').annotate(last_bal_qty=MIN('total_bal_qty')).order_by('-id')
-    #
-    # context = {'st': st}
-    #
-    # return render(request, 'station/reports/stock_report.html', context)
 
 
 @login_required()
@@ -158,49 +168,15 @@ def shift_sale_report(request):
 
 
 @login_required()
-def reorts(request):
-    # get all the sales
-    # sales = Sales.objects.all()
-    # context = {'sales': sales}
-    # # render the template with the shift-wise sales data
+def reports(request):
+
     return render(request, 'station/reports/reports.html')
 
 
 def handler404(request, exception):
     return HttpResponseNotFound(render(request, 'station/404.html'))
 
-#
-#
-# def item_stock(request):
-#     item_stock_qs = Stock.objects.all().select_related('item', 'gas_station').order_by('item__name',
-#                                                                                        'gas_station__name',
-#                                                                                        '-datetime')
-#     item_stock_dict = {}
-#     for item_stock in item_stock_qs:
-#         item_name = item_stock.item.name
-#         station_name = item_stock.station.name
-#         if item_name not in item_stock_dict:
-#             item_stock_dict[item_name] = {}
-#         if station_name not in item_stock_dict[item_name]:
-#             item_stock_dict[item_name][station_name] = {
-#                 'first_entry_balance': item_stock.quantity,
-#                 'current_stock': item_stock.quantity,
-#                 'total_sold': 0,
-#             }
-#         else:
-#             item_stock_dict[item_name][station_name]['current_stock'] += item_stock.quantity
-#         station = item_stock_dict[item_name][station_name]
-#     context = {'item_stock_dict': item_stock_dict}
-#     return render(request, 'station/reports/item_stock.html', context)
-# def item_balance(request):
-#     items = Inventory.objects.all().order_by('item__name').distinct('item__name')
-#     item_list = []
-#     for item in items:
-#         stock_details = Inventory.objects.filter(item=item.item).order_by('-id')[0]
-#         pur_qty = stock_details.pur_qty if stock_details.pur_qty is not None else 0
-#         sale_qty = stock_details.sale_qty if stock_details.sale_qty is not None else 0
-#         total_bal_qty = stock_details.total_bal_qty if stock_details.total_bal_qty is not None else 0
-#         if sale_qty:
-#             total_bal_qty -= sale_qty
-#         item_list.append({'item': item.item, 'total_bal_qty': total_bal_qty})
-#     return render(request, 'station/reports/item_balance.html', {'item_list': item_list})
+
+
+
+

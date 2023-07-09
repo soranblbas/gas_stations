@@ -3,60 +3,47 @@
 <style>
     table, th, td {
         border: 0.5px solid;
-
     }
-
-
 </style>
 
 {% block content %}
-
     <h1>Stock Report</h1>
+    <form method="get">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+        <button type="submit">Filter</button>
+    </form>
+    <br>
     <table class="table table-bordered" id="stock">
-
         <thead>
-        <tr>
-            <th>Station</th>
-            <th>Item</th>
-            <th>Stock Invoice</th>
-            <th>Purchased Quantity</th>
-            <th>Purchased Date</th>
-            <th>Sale date</th>
-            <th>Sale Invoice</th>
-            <th>Sold Quantity</th>
-            <th>Stock Balance</th>
-        </tr>
+            <tr>
+                <th>Station</th>
+                <th>Item</th>
+                <th>Stock Invoice</th>
+                <th>Purchased Quantity</th>
+                <th>Purchased Date</th>
+                <th>Sale Date</th>
+                <th>Sale Invoice</th>
+                <th>Sold Quantity</th>
+                <th>Stock Balance</th>
+            </tr>
         </thead>
         <tbody>
-        {% for i in st %}
-            <tr>
-                <td>{{ i.gas_station }}</td>
-                <td>{{ i.item }}</td>
-                <td>{{ i.stock.invoice_number }}</td>
-                <td>{{ i.pur_qty }}</td>
-                <td>{{ i.stock.created_at.date }}</td>
-                <td>{{ i.sale.sale_invoice_date }}</td>
-                <td>{{ i.sale.invoice_number }}</td>
-                <td>{{ i.sale_qty }}</td>
-                <td>{{ i.total_bal_qty }}</td>
-            </tr>
-        {% endfor %}
+            {% for item in st %}
+                <tr>
+                    <td>{{ item.gas_station }}</td>
+                    <td>{{ item.item }}</td>
+                    <td>{{ item.stock.invoice_number }}</td>
+                    <td>{{ item.pur_qty }}</td>
+                    <td>{{ item.stock.created_at.date }}</td>
+                    <td>{{ item.sale.sale_invoice_date }}</td>
+                    <td>{{ item.sale.invoice_number }}</td>
+                    <td>{{ item.sale_qty }}</td>
+                    <td>{{ item.total_bal_qty }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
-
-        <tfoot>
-        <th></th>
-        <th></th>
-        <th></th>
-
-        <th style="background-color: #91efa8"></th>
-        <th></th>
-        <th></th>
-
-        <th></th>
-        <th style="background-color: #91efa8"></th>
-        <th></th>
-
-        </tfoot>
-
     </table>
 {% endblock %}

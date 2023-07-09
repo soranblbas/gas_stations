@@ -1,0 +1,37 @@
+<form method="POST" action="{% url 'stock_balance' %}">
+    {% csrf_token %}
+    <label for="item">Select Item:</label>
+    <select name="item" id="item">
+        {% for item in items %}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="start_date">Start Date:</label>
+    <input type="date" name="start_date" id="start_date">
+    <br>
+    <label for="end_date">End Date:</label>
+    <input type="date" name="end_date" id="end_date">
+    <br>
+    <button type="submit">Filter</button>
+</form>
+
+{% if stock_balance %}
+    <h2>Stock Balance</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Gas Station</th>
+                <th>Total Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for balance in stock_balance %}
+                <tr>
+                    <td>{{ balance.gas_station__name }}</td>
+                    <td>{{ balance.total_balance }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
