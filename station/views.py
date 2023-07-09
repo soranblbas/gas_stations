@@ -1,18 +1,13 @@
-from multiprocessing import Value
-from django.contrib.auth.views import LoginView, LogoutView
+
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group, Permission
-from django.db.models.functions import Coalesce
-from django.forms import IntegerField
+
 from django.http import HttpResponseNotFound
-from django.shortcuts import render
-from django.db.models import Sum, Case, When, F, Max
-from django.views.generic import TemplateView
+from datetime import datetime, timedelta
 from pyexpat.errors import messages
 from django.contrib import messages
 from .filters import Sales_Filter
 from .models import *
-from django.views.generic import ListView
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
@@ -57,7 +52,6 @@ def sales_report(request):
     # return render(request, 'station/reports/sales_report.html', context)
 
 
-from datetime import datetime
 
 @login_required()
 def stock_report(request):
@@ -68,8 +62,12 @@ def stock_report(request):
         end_date_str = request.GET.get('end_date')
 
         # Convert the date strings to datetime objects
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else None
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else None
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
+
+        # Adjust the end date if it is the same as the start date
+        if start_date and end_date and start_date == end_date:
+            end_date += timedelta(days=1)
 
         # Filter the inventory items based on the date range
         st = Inventory.objects.all()
@@ -86,6 +84,7 @@ def stock_report(request):
     else:
         message = "You do not have permission to access this page."
         return render(request, 'station/reports/permission_denied.html', {'message': message})
+
 
 
 @login_required()
