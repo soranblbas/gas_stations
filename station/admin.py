@@ -231,13 +231,12 @@ class GasStationAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ('stock_invoice', 'gas_station', 'item', 'set','stock_invoice_created_at')
+    list_display = ('stock_invoice', 'gas_station', 'item', 'set', 'stock_invoice_created_at')
     list_filter = ('item', 'gas_station',)
 
     # search_fields = ['stock_invoice', 'gas_station__name', 'item__name']
     def stock_invoice_created_at(self, obj):
         return obj.stock_invoice.created_at
-
 
     stock_invoice_created_at.short_description = 'Stock Invoice Created At'
 
@@ -247,10 +246,12 @@ class StockAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(gas_station__user=request.user)
 
+
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from .models import Inventory
+
 
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
