@@ -247,12 +247,6 @@ class StockAdmin(admin.ModelAdmin):
         return qs.filter(gas_station__user=request.user)
 
 
-from django.contrib import admin
-from django.urls import reverse
-from django.utils.html import format_html
-from .models import Inventory
-
-
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ('gas_station', 'item', 'stock', 'sale', 'pur_qty', 'sale_qty', 'total_bal_qty')
