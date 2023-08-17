@@ -231,14 +231,10 @@ class GasStationAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ('stock_invoice', 'gas_station', 'item', 'set', 'stock_invoice_created_at',)
+    list_display = ('stock_invoice', 'gas_station', 'item', 'set',)
     list_filter = ('item', 'gas_station',)
 
     # search_fields = ['stock_invoice', 'gas_station__name', 'item__name']
-    def stock_invoice_created_at(self, obj):
-        return obj.stock_invoice.created_at
-
-    stock_invoice_created_at.short_description = 'Stock Invoice Created At'
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -246,17 +242,22 @@ class StockAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(gas_station__user=request.user)
 
+from django.contrib import admin
+from django.urls import reverse
+from django.utils.html import format_html
+from .models import Inventory
 
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ('gas_station', 'item', 'stock', 'sale', 'pur_qty', 'sale_qty', 'total_bal_qty')
-    list_filter = ('item', 'gas_station',)
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(gas_station__user=request.user)
+    actions = ['filter_inventory']
+
+    def filter_inventory(self, request, queryset):
+        url = reverse('inventory_filter')
+        return format_html('<a href="{}" target="_blank">Filter Inventory</a>', url)
+
+    filter_inventory.short_description = 'Filter Inventory'
 
 
 # admin.site.register(GasStation, GasStationAdmin)
