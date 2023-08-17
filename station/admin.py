@@ -238,7 +238,6 @@ class StockAdmin(admin.ModelAdmin):
         return obj.stock_invoice.created_at
 
     stock_invoice_created_at.short_description = 'Stock Invoice Created At'
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
