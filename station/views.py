@@ -70,7 +70,7 @@ def stock_report(request):
             end_date += timedelta(days=1)
 
         # Filter the inventory items based on the date range
-        st = Inventory.objects.all()
+        st = Inventory.objects.select_related()
         if start_date and end_date:
             st = st.filter(stock__created_at__range=(start_date, end_date))
 
@@ -121,10 +121,6 @@ def complted_order_report(request):
     else:
         message = "You do not have permission to access this page."
         return render(request, 'station/reports/permission_denied.html', {'message': message})
-
-
-# orders = OrderItem.objects.select_related()
-# return render(request, 'station/reports/orders_report.html', {'orders': orders})
 
 
 @login_required()
