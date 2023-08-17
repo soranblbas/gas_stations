@@ -234,7 +234,6 @@ class StockAdmin(admin.ModelAdmin):
     list_display = ('stock_invoice', 'gas_station', 'item', 'set', 'stock_invoice_created_at')
     list_filter = ('item', 'gas_station',)
 
-    # search_fields = ['stock_invoice', 'gas_station__name', 'item__name']
     def stock_invoice_created_at(self, obj):
         return obj.stock_invoice.created_at
 
