@@ -238,6 +238,7 @@ class StockAdmin(admin.ModelAdmin):
     def stock_invoice_created_at(self, obj):
         return obj.stock_invoice.created_at
 
+
     stock_invoice_created_at.short_description = 'Stock Invoice Created At'
 
     def get_queryset(self, request):
