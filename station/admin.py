@@ -245,6 +245,7 @@ class StockAdmin(admin.ModelAdmin):
         return qs.filter(gas_station__user=request.user)
 
 
+
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ('gas_station', 'item', 'stock', 'sale', 'pur_qty', 'sale_qty', 'total_bal_qty')
