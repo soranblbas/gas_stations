@@ -251,11 +251,18 @@ class InventoryAdmin(admin.ModelAdmin):
 
     actions = ['filter_inventory']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(gas_station__user=request.user)
+
     def filter_inventory(self, request, queryset):
         url = reverse('inventory_filter')
         return format_html('<a href="{}" target="_blank">Filter Inventory</a>', url)
 
     filter_inventory.short_description = 'Filter Inventory'
+
 
 
 # admin.site.register(GasStation, GasStationAdmin)
