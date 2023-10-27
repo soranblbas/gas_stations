@@ -92,10 +92,10 @@ WSGI_APPLICATION = "gas_stations.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd3h4r1qolvt0c',
-        'USER': 'lxymcnqcyliydw',
-        'PASSWORD': '67a9985612458c5f3e14cb3f033ee050738716d05605db10987af4557799b926',
-        'HOST': 'ec2-52-45-200-167.compute-1.amazonaws.com',
+        'NAME': 'd4dk7p5bs5qm05',
+        'USER': 'kioqtfvfbtkoji',
+        'PASSWORD': '0c6b1dc5dd056e3b2572a0c832aa68d5345574849162b5db3e0c6c7566aa267b',
+        'HOST': 'ec2-3-216-4-251.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
