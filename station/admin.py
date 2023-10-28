@@ -249,6 +249,8 @@ class StockAdmin(admin.ModelAdmin):
 @admin.register(Inventory)
 class InventoryAdmin(admin.ModelAdmin):
     list_display = ('gas_station', 'item', 'stock', 'sale', 'pur_qty', 'sale_qty', 'total_bal_qty')
+    list_filter = ('item',)
+
 
     actions = ['filter_inventory']
 
